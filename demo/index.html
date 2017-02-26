@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue-date-range demo</title>
+</head>
+<body>
+<div id="app">
+    <daterange></daterange>
+</div>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="../dist/bundle.min.js"></script>
+<script>
+//    Vue.use(window.DateRange);
+    console.log(window.daterange);
+
+    new Vue({
+        el: '#app',
+        components: {
+            'daterange':daterange.DateRange
+        },
+        created: function() {
+
+        },
+        methods: {
+
+        }
+    });
+</script>
+</body>
+</html>
