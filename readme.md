@@ -1,5 +1,8 @@
 A vue component for choosing dates and date ranges. Uses Moment.js for date operations.
 
+# demo
+[](https://github.com/ParadeTo/vue-date-range/blob/master/img/demo.png)
+
 # use
 ``npm install vue-date-range``
 ```
