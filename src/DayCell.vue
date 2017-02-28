@@ -38,7 +38,12 @@
       width: 2.6rem;
       height: 2.6rem;
       line-height: 2.7rem;
-      &.selected, &.in-range {
+      &.selected {
+        border-radius: 50%;
+        background-color: red;
+        color: #fff;
+      }
+      &.in-range {
         border-radius: 50%;
         background-color: #4790E0;
         color: #fff;

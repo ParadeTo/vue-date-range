@@ -5,26 +5,89 @@
     <meta name="viewport" content="with=device-width,initial-scale=1.0,
       maximum-scale=1.0,minimum-scale=1.0,uses-scalable=no">
     <title>vue-date-range demo</title>
+    <style>
+        #custom-style .ayou-day-cell .selected {
+            background-color: orange;
+        }
+        #custom-style .ayou-day-cell .in-range {
+            background-color: orange;
+        }
+    </style>
 </head>
 <body>
-<div id="app">
-    <daterange></daterange>
+<h2>calendar</h2>
+<div id="calendar">
+    <span>{{date}}</span>
+    <calendar :disable-days-before-today="disableDaysBeforeToday" :lang="lang" @change="onChange"></calendar>
 </div>
+<h2>date-range</h2>
+<div id="range">
+    <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
+    <daterange :range="range" :lang="lang" @change="onChange"></daterange>
+</div>
+<h2>custom style</h2>
+<div id="custom-style">
+    <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
+    <daterange :range="range" :lang="lang" @change="onChange"></daterange>
+</div>
+<script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script src="../dist/index.js"></script>
+<script src="../dist/vue-date-range.js"></script>
 <script>
-    console.log(window.daterange);
     new Vue({
-        el: '#app',
+        el: '#calendar',
+        components: {
+          'calendar':daterange.Calendar
+        },
+        data: {
+          disableDaysBeforeToday: true,
+          lang: 'en',
+          date: moment().format('YYYY-MM-DD')
+        },
+        methods: {
+          onChange(date) {
+            this.date = date.format('YYYY-MM-DD');
+          }
+        }
+    });
+
+
+    new Vue({
+        el: '#range',
         components: {
             'daterange':daterange.DateRange
         },
-        created: function() {
-
+        data: {
+          lang: 'en',
+          range: {
+            startDate: moment(),
+            endDate: moment().add(7, 'days')
+          }
         },
         methods: {
-
+          onChange(range) {
+            this.range = range;
+          }
         }
+    });
+
+    new Vue({
+      el: '#custom-style',
+      components: {
+        'daterange':daterange.DateRange
+      },
+      data: {
+        lang: 'en',
+        range: {
+          startDate: moment(),
+          endDate: moment().add(7, 'days')
+        }
+      },
+      methods: {
+        onChange(range) {
+          this.range = range;
+        }
+      }
     });
 </script>
 </body>

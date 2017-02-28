@@ -1,6 +1,14 @@
 <template>
-  <div class="ayou-date-range" v-show="show">
-    <calendar :range="rangeData" @change="onChange"></calendar>
+  <div class="ayou-date-range">
+    <calendar
+            :lang="lang"
+            :first-day-of-week="firstDayOfWeek"
+            :day-of-month="dayOfMonth"
+            :disable-days-before-today="disableDaysBeforeToday"
+            :range="rangeData"
+            @change="onChange">
+
+    </calendar>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -12,9 +20,24 @@
       Calendar
     },
     props: {
-      show: {
-        type: Boolean,
-        default: true
+      firstDayOfWeek: {
+        type: Number,
+        default: function() {
+          return moment.localeData().firstDayOfWeek();
+        }
+      },
+      dayOfMonth: {
+        type: Object,
+        default: function() {
+          return moment();
+        }
+      },
+      disableDaysBeforeToday: {
+        type: Boolean
+      },
+      lang: {
+        type: String,
+        default: 'zh'
       },
       range: {
         type: Object

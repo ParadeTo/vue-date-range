@@ -45,8 +45,7 @@
         }
       },
       disableDaysBeforeToday: {
-        type: Boolean,
-        default: false
+        type: Boolean
       },
       range: {
         type: Object,
@@ -65,6 +64,7 @@
       };
     },
     created() {
+      console.log(this.disableDaysBeforeToday);
       this.initWeekDays();
       this.initDays();
     },
@@ -132,8 +132,8 @@
         }
       },
       isSelected(day) {
-        if (!day) return;
-        return day.dayMoment.unix() === this.date.unix();
+        if (!day.dayMoment) return;
+        return day.dayMoment.format('YYYY-MM-DD') === this.date.format('YYYY-MM-DD');
       },
       isInRange(day) {
         if (this.range && this.range.startDate && this.range.endDate && day && day.dayMoment) {
