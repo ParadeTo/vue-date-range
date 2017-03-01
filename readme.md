@@ -7,6 +7,7 @@ A vue component for choosing dates and date ranges. Uses Moment.js for date oper
 # use
 ## npm
 ``npm install vue-date-range``
+
 ### Calendar
 ```
 <calendar :day-of-month="dayOfMonth" :first-day-of-week="1" :selected-date="selectedDate" :disable-days-before-today="disableDaysBeforeToday" :lang="lang" @change="onChange"></calendar>
