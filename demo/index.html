@@ -39,12 +39,14 @@
         components: {
           'calendar':daterange.Calendar
         },
-        data: {
-          dayOfMonth: moment().add(1, 'months'),
-          selectedDate: moment().add(1, 'months'),
-          disableDaysBeforeToday: true,
-          lang: 'en',
-          date: moment().format('YYYY-MM-DD')
+        data() {
+          return {
+            dayOfMonth: moment().add(1, 'months'),
+            selectedDate: moment().add(1, 'months'),
+            disableDaysBeforeToday: true,
+            lang: 'en',
+            date: moment().format('YYYY-MM-DD')
+          };
         },
         methods: {
           onChange(date) {
@@ -59,12 +61,14 @@
         components: {
             'daterange':daterange.DateRange
         },
-        data: {
-          lang: 'en',
-          range: {
-            startDate: moment(),
-            endDate: moment().add(7, 'days')
-          }
+        data() {
+          return {
+            lang: 'en',
+            range: {
+              startDate: moment(),
+              endDate: moment().add(7, 'days')
+            }
+          };
         },
         methods: {
           onChange(range) {

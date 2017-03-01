@@ -16,12 +16,14 @@ export default {
   components: {
     Calendar
   },
-  data: {
-    dayOfMonth: moment().add(1, 'months'),
-    selectedDate: moment().add(1, 'months'),
-    disableDaysBeforeToday: true,
-    lang: 'en',
-    date: moment().format('YYYY-MM-DD')
+  data() {
+    return {
+      dayOfMonth: moment().add(1, 'months'),
+      selectedDate: moment().add(1, 'months'),
+      disableDaysBeforeToday: true,
+      lang: 'en',
+      date: moment().format('YYYY-MM-DD')
+    };
   },
   methods: {
     onChange(date) {
@@ -40,12 +42,14 @@ export default {
   components: {
     DateRange
   },
-  data: {
-    lang: 'en',
-    range: {
-      startDate: moment(),
-      endDate: moment().add(7, 'days')
-    }
+  data() {
+    return {
+      lang: 'en',
+      range: {
+        startDate: moment(),
+        endDate: moment().add(7, 'days')
+      }
+    };
   },
   methods: {
     onChange(range) {
@@ -77,35 +81,40 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
 <script src="../dist/vue-date-range.js"></script>
 <script>
     new Vue({
-        el: '#calendar',
-        components: {
-          'calendar':daterange.Calendar
-        },
-        data: {
+      el: '#calendar',
+      components: {
+        'calendar':daterange.Calendar
+      },
+      data() {
+        return {
           dayOfMonth: moment().add(1, 'months'),
           selectedDate: moment().add(1, 'months'),
           disableDaysBeforeToday: true,
           lang: 'en',
           date: moment().format('YYYY-MM-DD')
-        },
-        methods: {
-          onChange(date) {
-            this.date = date.format('YYYY-MM-DD');
-          }
+        };
+      },
+      methods: {
+        onChange(date) {
+          this.date = date.format('YYYY-MM-DD');
         }
+      }
     });
-    
+  
+  
     new Vue({
         el: '#range',
         components: {
             'daterange':daterange.DateRange
         },
-        data: {
-          lang: 'en',
-          range: {
-            startDate: moment(),
-            endDate: moment().add(7, 'days')
-          }
+        data() {
+          return {
+            lang: 'en',
+            range: {
+              startDate: moment(),
+              endDate: moment().add(7, 'days')
+            }
+          };
         },
         methods: {
           onChange(range) {

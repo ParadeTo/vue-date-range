@@ -1,6 +1,6 @@
 {
   "name": "vue-date-range",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "A vue component for choosing dates and date ranges. Uses Moment.js for date operations.",
   "main": "dist/vue-date-range.js",
   "scripts": {
