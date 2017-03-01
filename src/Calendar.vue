@@ -17,7 +17,7 @@
       <span v-for="day in weekDays">{{day}}</span>
     </div>
     <div class="days">
-      <day-cell :isSelected="isSelected(day)" :isInRange="isInRange(day)" v-for="day in days" :day="day" @dayClick="handleDayClick"></day-cell>
+      <day-cell key="index" :isSelected="isSelected(day)" :isInRange="isInRange(day)" v-for="(day, index) in days" :day="day" @dayClick="handleDayClick"></day-cell>
     </div>
   </div>
 </template>
@@ -54,13 +54,16 @@
       lang: {
         type: String,
         default: 'zh'
+      },
+      selectedDate: {
+        type: Object
       }
     },
     data() {
       return {
         weekDays: [],
         days: [],
-        date: moment()
+        date: this.selectedDate || moment()
       };
     },
     created() {

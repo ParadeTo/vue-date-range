@@ -2,6 +2,7 @@
   <div class="ayou-date-range">
     <calendar
             :lang="lang"
+            :selected-date="selectedDate"
             :first-day-of-week="firstDayOfWeek"
             :day-of-month="dayOfMonth"
             :disable-days-before-today="disableDaysBeforeToday"
@@ -49,6 +50,7 @@
           startDate: null,
           endDate: null
         },
+        date: this.selectedDate || moment(),
         step: 0
       };
     },

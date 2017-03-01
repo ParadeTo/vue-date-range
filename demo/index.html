@@ -18,7 +18,7 @@
 <h2>calendar</h2>
 <div id="calendar">
     <span>{{date}}</span>
-    <calendar :disable-days-before-today="disableDaysBeforeToday" :lang="lang" @change="onChange"></calendar>
+    <calendar :day-of-month="dayOfMonth" :first-day-of-week="1" :selected-date="selectedDate" :disable-days-before-today="disableDaysBeforeToday" :lang="lang" @change="onChange"></calendar>
 </div>
 <h2>date-range</h2>
 <div id="range">
@@ -40,6 +40,8 @@
           'calendar':daterange.Calendar
         },
         data: {
+          dayOfMonth: moment().add(1, 'months'),
+          selectedDate: moment().add(1, 'months'),
           disableDaysBeforeToday: true,
           lang: 'en',
           date: moment().format('YYYY-MM-DD')
