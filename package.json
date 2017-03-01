@@ -2,7 +2,7 @@
   "name": "vue-date-range",
   "version": "1.0.6",
   "description": "A vue component for choosing dates and date ranges. Uses Moment.js for date operations.",
-  "main": "dist/index.js",
+  "main": "dist/vue-date-range.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
