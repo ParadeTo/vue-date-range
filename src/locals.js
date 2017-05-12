@@ -1,6 +1,5 @@
 module.exports = {
   translations: {
-
     'da': {
       'months': {
         'original': ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'],
@@ -176,6 +175,5 @@ module.exports = {
       },
       'days': ['Ned', 'Pon', 'Tor', 'Sre', 'Čet', 'Pet', 'Sob']
     }
-
   }
 };

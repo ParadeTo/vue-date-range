@@ -1,4 +1,4 @@
-A vue component for choosing dates and date ranges. Uses Moment.js for date operations.
+A vue component for choosing dates and date ranges. Uses Moment.js for date operations. Support Chinese lunar.
 
 ![vue-date-range-demo.png](http://om464nmvr.bkt.clouddn.com/vue-date-range-demo.png)
 
@@ -10,7 +10,12 @@ A vue component for choosing dates and date ranges. Uses Moment.js for date oper
 
 ### Calendar
 ```
-<calendar :day-of-month="dayOfMonth" :first-day-of-week="1" :selected-date="selectedDate" :disable-days-before-today="disableDaysBeforeToday" :lang="lang" @change="onChange"></calendar>
+<calendar class="calendar"
+          :show-lunar="true"
+          :first-day-of-week="1"
+          :disable-days-before-today="disableDaysBeforeToday"
+          :default-date="date"
+          :lang="lang" @change="onChange"></calendar>
 ...
 import {Calendar} from 'vue-date-range';
 export default {
@@ -19,16 +24,14 @@ export default {
   },
   data() {
     return {
-      dayOfMonth: moment().add(1, 'months'),
-      selectedDate: moment().add(1, 'months'),
       disableDaysBeforeToday: true,
-      lang: 'en',
-      date: moment().format('YYYY-MM-DD')
+      lang: 'zh',
+      date: moment()
     };
   },
   methods: {
     onChange(date) {
-      this.date = date.format('YYYY-MM-DD');
+      this.date = date;
     }
   }
 }
@@ -36,7 +39,7 @@ export default {
 
 ### DateRange
 ```
-<date-range :lang='lang' :range="range" @change="onChange"></date-range>
+<daterange class="calendar" :default-range="range" :lang="lang" @change="onChange"></daterange>
 ...
 import {DateRange} from 'vue-date-range';
 export default {
@@ -55,7 +58,16 @@ export default {
   methods: {
     onChange(range) {
       this.range = range;
-    }
+    },
+    setRange (p) {
+      if (typeof p === 'number') {
+        console.log(p)
+        this.range = {
+          startDate: moment().add(p, 'days'),
+          endDate: moment()
+        }
+      }
+    },
   }
 }
 ```
@@ -65,15 +77,21 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
 
 ```
 ...
-<h2>calendar</h2>
-<div id="calendar">
-    <span>{{date}}</span>
-    <calendar :day-of-month="dayOfMonth" :first-day-of-week="1" :selected-date="selectedDate" :disable-days-before-today="disableDaysBeforeToday" :lang="lang" @change="onChange"></calendar>
+<div id="calendarLunar" class="calendar-wrapper">
+    <span>{{date.format('YYYY-MM-DD')}}</span>
+    <calendar class="calendar"
+              :show-lunar="true"
+              :first-day-of-week="1"
+              :disable-days-before-today="disableDaysBeforeToday"
+              :default-date="date"
+              :lang="lang" @change="onChange"></calendar>
 </div>
-<h2>date-range</h2>
-<div id="range">
+...
+<div id="range" class="calendar-wrapper">
     <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
-    <daterange :range="range" :lang="lang" @change="onChange"></daterange>
+    <daterange class="calendar" :default-range="range" :lang="lang" @change="onChange"></daterange>
+    <button @click.stop.prevent="setRange(-7)">Last 7 days</button>
+    <button @click.stop.prevent="setRange(-30)">Last 1 month</button>
 </div>
 ...
 
@@ -82,27 +100,25 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
 <script src="../dist/vue-date-range.js"></script>
 <script>
     new Vue({
-      el: '#calendar',
-      components: {
-        'calendar':daterange.Calendar
-      },
-      data() {
-        return {
-          dayOfMonth: moment().add(1, 'months'),
-          selectedDate: moment().add(1, 'months'),
-          disableDaysBeforeToday: true,
-          lang: 'en',
-          date: moment().format('YYYY-MM-DD')
-        };
-      },
-      methods: {
-        onChange(date) {
-          this.date = date.format('YYYY-MM-DD');
+        el: '#calendarLunar',
+        components: {
+          'calendar':daterange.Calendar
+        },
+        data() {
+          return {
+            disableDaysBeforeToday: true,
+            lang: 'zh',
+            date: moment()
+          };
+        },
+        methods: {
+          onChange(date) {
+            this.date = date;
+          }
         }
-      }
     });
-  
-  
+
+
     new Vue({
         el: '#range',
         components: {
@@ -120,21 +136,37 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
         methods: {
           onChange(range) {
             this.range = range;
-          }
+          },
+          setRange (p) {
+            if (typeof p === 'number') {
+              console.log(p)
+              this.range = {
+                startDate: moment().add(p, 'days'),
+                endDate: moment()
+              }
+            }
+          },
         }
     });
 </script>
 ```
 
 # Props
+## Calendar
+* show-lunar: Show lunar or not. Default is false.
 * day-of-month: Use to init calendar month, any day in the month is ok. Default is today.
-* disable-days-before-today: Disable days before today.
+* disable-days-before-today: Disable days before today or not.
 * first-day-of-week: Set the first day of Week. Default is 0 (Sunday).
-* lang: Language, see in src/DateLanguages.js
-* selected-date: Init the selected date. Only for Calendar.
-* range: Use for date range.
+* lang: Language, see in src/locals.js
+* default-date: Init the selected date. Only for Calendar.
+* range: The selected date range. Like this: 
 
-```
-range: {startDate: moment(), endDate: moment().add(7, 'days')}
-```
+  ```
+  range: {startDate: moment(), endDate: moment().add(7, 'days')}
+  ```
+  
+## DateRange
+This component is build on ``Calendar``, so it has all the props of ``Calendar`` except ``default-date``
+Also it has its specific props: 
 
+* defaultRange: Use to init the date range

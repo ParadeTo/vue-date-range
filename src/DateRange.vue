@@ -2,35 +2,39 @@
   <div class="ayou-date-range">
     <calendar
             :lang="lang"
-            :selected-date="selectedDate"
             :first-day-of-week="firstDayOfWeek"
             :day-of-month="dayOfMonth"
             :disable-days-before-today="disableDaysBeforeToday"
             :range="rangeData"
+            :showLunar="showLunar"
             @change="onChange">
 
     </calendar>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import moment from 'moment';
-  import Calendar from './Calendar.vue';
+  import moment from 'moment'
+  import Calendar from './Calendar.vue'
 
   export default {
     components: {
       Calendar
     },
     props: {
+      showLunar: {
+        type: Boolean,
+        default: false
+      },
       firstDayOfWeek: {
         type: Number,
-        default: function() {
-          return moment.localeData().firstDayOfWeek();
+        default: function () {
+          return moment.localeData().firstDayOfWeek()
         }
       },
       dayOfMonth: {
         type: Object,
-        default: function() {
-          return moment();
+        default: function () {
+          return moment()
         }
       },
       disableDaysBeforeToday: {
@@ -40,57 +44,50 @@
         type: String,
         default: 'zh'
       },
-      range: {
+      defaultRange: {
         type: Object
       }
     },
-    data() {
+    data () {
       return {
-        rangeData: this.range || {
+        rangeData: this.defaultRange || {
           startDate: null,
           endDate: null
         },
         date: this.selectedDate || moment(),
         step: 0
-      };
+      }
+    },
+    watch: {
+      defaultRange (val) {
+        this.rangeData = val
+        this.step = 0
+      }
     },
     methods: {
-      onChange(dayMoment) {
+      onChange (dayMoment) {
         switch (this.step) {
           case 0:
-            this.rangeData['startDate'] = dayMoment;
-            this.rangeData['endDate'] = dayMoment;
-            this.step = 1;
-            break;
+            this.rangeData = {}
+            this.rangeData['startDate'] = dayMoment
+            this.rangeData['endDate'] = dayMoment
+            this.step = 1
+            break
 
           case 1:
-            this.rangeData['endDate'] = dayMoment;
-            this.step = 0;
-            this.emitChange();
-            break;
+            this.rangeData['endDate'] = dayMoment
+            this.step = 0
+            this.emitChange()
+            break
         }
       },
-      emitChange() {
-        const sTs = this.rangeData.startDate.unix();
-        const eTs = this.rangeData.endDate.unix();
-        const startDate = sTs <= eTs ? this.rangeData.startDate : this.rangeData.endDate;
-        const endDate = sTs > eTs ? this.rangeData.startDate : this.rangeData.endDate;
-        this.$emit('change', {startDate, endDate});
+      emitChange () {
+        const sTs = this.rangeData.startDate.unix()
+        const eTs = this.rangeData.endDate.unix()
+        const startDate = sTs <= eTs ? this.rangeData.startDate : this.rangeData.endDate
+        const endDate = sTs > eTs ? this.rangeData.startDate : this.rangeData.endDate
+        this.$emit('change', {startDate, endDate})
       }
     }
-  };
-</script>
-<style lang="less" rel="stylesheet/less">
-  .ayou-date-range-footer {
-    height: 3rem;
-    line-height: 3rem;
-    background-color: #fff;
-    text-align: right;
-    padding: 0 2rem;
-    button {
-      color: #ff4383;
-      background-color: transparent;
-      margin-left: 2rem;
-    }
   }
-</style>
+</script>

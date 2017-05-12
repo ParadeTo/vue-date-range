@@ -1,7 +1,7 @@
 <template>
   <div class="ayou-calendar" ref="calendar">
     <div class="month-year">
-      <button class="month-button" style="float: left" @click="changeMonth(-1)">
+      <button class="month-button" style="float: left" @click.stop.prevent="changeMonth(-1)">
         <i class="month-arrow month-arrow-prev"></i>
       </button>
       <span>
@@ -9,7 +9,7 @@
         <span class={classes.monthAndYearDivider}> - </span>
         <span class={classes.year}>{{dayOfMonth.format('YYYY')}}</span>
       </span>
-      <button class="month-button" style="float: right" @click="changeMonth(1)">
+      <button class="month-button" style="float: right" @click.stop.prevent="changeMonth(1)">
         <i class="month-arrow month-arrow-next"></i>
       </button>
     </div>
@@ -17,31 +17,36 @@
       <span v-for="day in weekDays">{{day}}</span>
     </div>
     <div class="days">
-      <day-cell key="index" :isSelected="isSelected(day)" :isInRange="isInRange(day)" v-for="(day, index) in days" :day="day" @dayClick="handleDayClick"></day-cell>
+      <day-cell key="index"
+                :showLunar="showLunar"
+                :isSelected="isSelected(day)"
+                :isInRange="isInRange(day)"
+                :day="day"
+                @dayClick="handleDayClick"
+                v-for="(day, index) in days">
+      </day-cell>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import moment from 'moment';
-  // import Hammer from 'COMMON/js/hammer.min.js';
-  import DayCell from './DayCell.vue';
-  import DateLanguages from './DateLanguages.js';
+  import moment from 'moment'
+  // import Hammer from 'COMMON/js/hammer.min.js'
+  import DayCell from './DayCell.vue'
+  import locals from './locals.js'
 
   export default {
     components: {
       DayCell
     },
     props: {
+      showLunar: {
+        type: Boolean,
+        default: false
+      },
       firstDayOfWeek: {
         type: Number,
-        default: function() {
-          return moment.localeData().firstDayOfWeek();
-        }
-      },
-      dayOfMonth: {
-        type: Object,
-        default: function() {
-          return moment();
+        default: function () {
+          return moment.localeData().firstDayOfWeek()
         }
       },
       disableDaysBeforeToday: {
@@ -55,107 +60,128 @@
         type: String,
         default: 'zh'
       },
-      selectedDate: {
+      defaultDate: {
         type: Object
       }
     },
-    data() {
+    data () {
       return {
         weekDays: [],
         days: [],
-        date: this.selectedDate || moment()
-      };
+        dayOfMonth: moment(), // Any day of current displaying month
+        date: this.defaultDate || moment()
+      }
     },
-    created() {
-      console.log(this.disableDaysBeforeToday);
-      this.initWeekDays();
-      this.initDays();
+    watch: {
+      range (val) {
+        this.date = val.endDate
+        this.resetDayOfMonth()
+      },
+      defaultDate (val) {
+        this.date = val
+        this.resetDayOfMonth()
+      }
     },
-    mounted() {
-      // this.initGesture();
+    created () {
+      this.initWeekDays()
+      this.initDays()
+    },
+    mounted () {
+      // this.initGesture()
     },
     methods: {
+      // TODO Add gesture
       // initGesture() {
-      //   const that = this;
-      //   var hammer = new Hammer.Manager(that.$refs.calendar);
-      //   hammer.add(new Hammer.Swipe());
+      //   const that = this
+      //   var hammer = new Hammer.Manager(that.$refs.calendar)
+      //   hammer.add(new Hammer.Swipe())
       //   hammer.on('swiperight', function() {
-      //     that.dayOfMonth.add(-1, 'months');
-      //     that.initDays();
-      //   });
+      //     that.dayOfMonth.add(-1, 'months')
+      //     that.initDays()
+      //   })
       //   hammer.on('swipeleft', function() {
-      //     that.dayOfMonth.add(1, 'months');
-      //     that.initDays();
-      //   });
+      //     that.dayOfMonth.add(1, 'months')
+      //     that.initDays()
+      //   })
       // },
-      initWeekDays() {
-        const dow = this.firstDayOfWeek;
-        for (let i = dow; i < 7 + dow; i++) {
-          let day = i % 7;
-          this.weekDays.push(DateLanguages.translations[this.lang].days[day]);
+      resetDayOfMonth () {
+        if (this.date.format('YYYY-MM') !== this.dayOfMonth.format('YYYY-MM')) {
+          let _diff = Number(this.date.diff(this.dayOfMonth, 'months'))
+          _diff = _diff <= 0 ? _diff - 1 : _diff
+          this.dayOfMonth.add(_diff, 'months')
+          this.initDays()
         }
       },
-      initDays() {
-        this.days = [];
+      initWeekDays () {
+        const dow = this.firstDayOfWeek
+        for (let i = dow; i < 7 + dow; i++) {
+          let day = i % 7
+          this.weekDays.push(locals.translations[this.lang].days[day])
+        }
+      },
+      initDays () {
+        this.days = []
 
-        const firstDayOfWeek = this.firstDayOfWeek;
-        const startOfMonth = this.dayOfMonth.startOf('month').isoWeekday();
-        const monthNumber = this.dayOfMonth.month();
-        const dayCount = this.dayOfMonth.daysInMonth();
+        const firstDayOfWeek = this.firstDayOfWeek
+        const startOfMonth = this.dayOfMonth.startOf('month').isoWeekday()
+        const monthNumber = this.dayOfMonth.month()
+        const dayCount = this.dayOfMonth.daysInMonth()
 
-        const lastMonth = this.dayOfMonth.clone().month(monthNumber - 1);
-        const lastMonthDayCount = lastMonth.daysInMonth();
+        const lastMonth = this.dayOfMonth.clone().month(monthNumber - 1)
+        const lastMonthDayCount = lastMonth.daysInMonth()
 
-        const nextMonth = this.dayOfMonth.clone().month(monthNumber + 1);
+        const nextMonth = this.dayOfMonth.clone().month(monthNumber + 1)
 
         // Previous month's days
-        const diff = (Math.abs(firstDayOfWeek - (startOfMonth + 7)) % 7);
+        const diff = (Math.abs(firstDayOfWeek - (startOfMonth + 7)) % 7)
         for (let i = diff - 1; i >= 0; i--) {
-          const dayMoment = lastMonth.clone().date(lastMonthDayCount - i);
-          this.days.push({dayMoment, isPassive: true});
+          const dayMoment = lastMonth.clone().date(lastMonthDayCount - i)
+          this.days.push({dayMoment, isPassive: true})
         }
 
         // Current month's days
         for (let i = 1; i <= dayCount; i++) {
-          const dayMoment = this.dayOfMonth.clone().date(i);
+          const dayMoment = this.dayOfMonth.clone().date(i)
           // set days before today to isPassive
-          var _today = moment();
+          var _today = moment()
           if (this.disableDaysBeforeToday && Number(dayMoment.diff(_today, 'days')) <= -1) {
-            this.days.push({ dayMoment, isPassive: true });
+            this.days.push({ dayMoment, isPassive: true })
           } else {
-            this.days.push({ dayMoment });
+            this.days.push({ dayMoment })
           }
         }
 
         // Next month's days
-        const remainingCells = 42 - this.days.length; // 42cells = 7days * 6rows
+        const remainingCells = 42 - this.days.length // 42cells = 7days * 6rows
         for (let i = 1; i <= remainingCells; i++) {
-          const dayMoment = nextMonth.clone().date(i);
-          this.days.push({ dayMoment, isPassive: true });
+          const dayMoment = nextMonth.clone().date(i)
+          this.days.push({ dayMoment, isPassive: true })
         }
       },
-      isSelected(day) {
-        if (!day.dayMoment) return;
-        return day.dayMoment.format('YYYY-MM-DD') === this.date.format('YYYY-MM-DD');
+      isSelected (day) {
+        if (!day.dayMoment) return
+        return day.dayMoment.format('YYYY-MM-DD') === this.date.format('YYYY-MM-DD')
       },
-      isInRange(day) {
+      isInRange (day) {
         if (this.range && this.range.startDate && this.range.endDate && day && day.dayMoment) {
-          return day.dayMoment.isBetween(this.range['startDate'].clone().subtract(1, 'days'), this.range['endDate']) ||
-            day.dayMoment.isBetween(this.range['endDate'], this.range['startDate'].clone().add(1, 'days'));
+          return day.dayMoment.isBetween(this.range['startDate'].clone().subtract(1, 'hours'), this.range['endDate'].clone().add(1, 'hours')) ||
+            day.dayMoment.isBetween(this.range['endDate'], this.range['startDate'].clone().add(1, 'hours'))
         }
       },
-      handleDayClick(day) {
-        this.date = day.dayMoment;
-        this.$emit('change', day.dayMoment);
+      handleDayClick (day) {
+        this.date = day.dayMoment
+        this.$emit('change', day.dayMoment)
       },
-      changeMonth(delta) {
-        this.dayOfMonth.add(delta, 'months');
-        this.initDays();
+      changeMonth (delta) {
+        this.dayOfMonth.add(delta, 'months')
+        this.initDays()
       }
     }
-  };
+  }
 </script>
 <style lang="less" rel="stylesheet/less">
+  @import "_var";
+
   .ayou-calendar {
     background-color: #fff;
     .month-year {
@@ -165,7 +191,7 @@
       line-height: 4rem;
       .month-button {
         display: inline-block;
-        boxSizing: border-box;
+        box-sizing: border-box;
         height: 100%;
         width: 2rem;
         padding: 0;
@@ -178,15 +204,15 @@
         display: inline-block;
         height: 100%;
         line-height: 100%;
-        border-top: 1px solid #006CCA;
+        border-top: 1px solid @primary;
         width: 10px;
         height: 10px;
         &.month-arrow-prev {
-          border-left: 1px solid #006CCA;
+          border-left: 1px solid @primary;
           transform: rotate(-45deg);
         }
         &.month-arrow-next {
-          border-right: 1px solid #006CCA;
+          border-right: 1px solid @primary;
           transform: rotate(45deg);
         }
       }

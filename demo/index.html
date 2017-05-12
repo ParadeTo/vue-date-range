@@ -6,6 +6,70 @@
       maximum-scale=1.0,minimum-scale=1.0,uses-scalable=no">
     <title>vue-date-range demo</title>
     <style>
+        body, pre {
+            font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;;
+            background-color: #f5f5f5;
+        }
+        div {
+            box-sizing: border-box;
+        }
+        section {
+            max-width: 800px;
+            margin: 1rem auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 1rem;
+            /*border: 1px solid #dbdbdb;*/
+            box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        pre {
+            font-size: 12px;
+            background-color: #272822;
+            color: #fff;
+            overflow-x: auto;
+        }
+        button {
+            background-color: #23d160;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 5px;
+            outline: none;
+        }
+        button:hover {
+            cursor: pointer;
+        }
+        .calendar-wrapper {
+            width: 50%;
+            float: left;
+            padding-right: 1rem;
+        }
+        .code-wrapper {
+            width: 50%;
+            float: left;
+        }
+        @media all and (max-width: 800px) {
+            .calendar-wrapper {
+                width: 100%;
+            }
+            .code-wrapper {
+                width: 100%;
+            }
+        }
+        section:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+        .calendar {
+            margin: 1rem 0;
+            border: 1px solid #dbdbdb;
+        }
         #custom-style .ayou-day-cell .selected {
             background-color: orange;
         }
@@ -15,21 +79,167 @@
     </style>
 </head>
 <body>
-<h2>calendar</h2>
-<div id="calendar">
-    <span>{{date}}</span>
-    <calendar :day-of-month="dayOfMonth" :first-day-of-week="1" :selected-date="selectedDate" :disable-days-before-today="disableDaysBeforeToday" :lang="lang" @change="onChange"></calendar>
-</div>
-<h2>date-range</h2>
-<div id="range">
-    <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
-    <daterange :range="range" :lang="lang" @change="onChange"></daterange>
-</div>
-<h2>custom style</h2>
-<div id="custom-style">
-    <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
-    <daterange :range="range" :lang="lang" @change="onChange"></daterange>
-</div>
+<section>
+    <h2>calendar</h2>
+    <div id="calendar" class="calendar-wrapper">
+        <span>{{date.format('YYYY-MM-DD')}}</span>
+        <calendar class="calendar"
+                  :first-day-of-week="1"
+                  :default-date="date"
+                  :lang="lang" @change="onChange"></calendar>
+        <button @click.stop.prevent="setDate(-1)">Yesterday</button>
+        <button @click.stop.prevent="setDate(0)">Today</button>
+    </div>
+    <div class="code-wrapper">
+        <pre>
+            &lt;div id="calendar"&gt;
+                &lt;span&gt;{{date.format('YYYY-MM-DD')}}&lt;/span&gt;
+                &lt;calendar class="calendar"
+                      :first-day-of-week="1"
+                      :default-date="date"
+                      :lang="lang" @change="onChange"&gt;&lt;/calendar&gt;
+                &lt;button @click.stop.prevent="setDate(-1)"&gt;Yesterday&lt;/button&gt;
+                &lt;button @click.stop.prevent="setDate(0)"&gt;Today&lt;/button&gt;
+            &lt;/div&gt;
+
+            new Vue({
+                el: '#calendar',
+                components: {
+                  'calendar':daterange.Calendar
+                },
+                data() {
+                  return {
+                    dayOfMonth: moment().add(1, 'months'),
+                    selectedDate: moment().add(1, 'months'),
+                    disableDaysBeforeToday: true,
+                    lang: 'en',
+                    date: moment().format('YYYY-MM-DD')
+                  };
+                },
+                methods: {
+                  onChange(date) {
+                    this.date = date.format('YYYY-MM-DD');
+                  }
+                }
+            });
+        </pre>
+    </div>
+</section>
+<section>
+    <h2>calendar with lunar</h2>
+    <div id="calendarLunar" class="calendar-wrapper">
+        <span>{{date.format('YYYY-MM-DD')}}</span>
+        <calendar class="calendar"
+                  :show-lunar="true"
+                  :first-day-of-week="1"
+                  :disable-days-before-today="disableDaysBeforeToday"
+                  :default-date="date"
+                  :lang="lang" @change="onChange"></calendar>
+    </div>
+    <div class="code-wrapper">
+        <pre>
+            &lt;div id="calendarLunar"&gt;
+                &lt;span&gt;{{date.format('YYYY-MM-DD')}}&lt;/span&gt;
+                &lt;calendar :show-lunar="true"
+                          :first-day-of-week="1"
+                          :disable-days-before-today="disableDaysBeforeToday"
+                          :default-date="date"
+                          :lang="lang" @change="onChange"&gt;&lt;/calendar&gt;
+            &lt;/div&gt;
+
+            new Vue({
+              el: '#calendarLunar',
+              components: {
+                'calendar':daterange.Calendar
+              },
+              data() {
+                return {
+                  disableDaysBeforeToday: true,
+                  lang: 'zh',
+                  date: moment()
+                };
+              },
+              methods: {
+                onChange(date) {
+                  this.date = date;
+                }
+              }
+            });
+        </pre>
+    </div>
+</section>
+<section>
+    <h2>date-range</h2>
+    <div id="range" class="calendar-wrapper">
+        <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
+        <daterange class="calendar" :default-range="range" :lang="lang" @change="onChange"></daterange>
+        <button @click.stop.prevent="setRange(-7)">Last 7 days</button>
+        <button @click.stop.prevent="setRange(-30)">Last 1 month</button>
+    </div>
+    <div class="code-wrapper">
+        <pre>
+            &lt;div id="range"&gt;
+                &lt;span&gt;{{range.startDate.format('YYYY-MM-DD')}}&lt;/span&gt;~&lt;span&gt;{{range.endDate.format('YYYY-MM-DD')}}&lt;/span&gt;
+                &lt;daterange :default-range="range" :lang="lang" @change="onChange"&gt;&lt;/daterange&gt;
+                &lt;button @click.stop.prevent="setRange(-7)"&gt;Last 7 days&lt;/button&gt;
+                &lt;button @click.stop.prevent="setRange(-30)"&gt;Last 1 month&lt;/button&gt;
+            &lt;/div&gt;
+
+            new Vue({
+                el: '#range',
+                components: {
+                    'daterange':daterange.DateRange
+                },
+                data() {
+                  return {
+                    lang: 'en',
+                    range: {
+                      startDate: moment(),
+                      endDate: moment().add(7, 'days')
+                    }
+                  };
+                },
+                methods: {
+                  onChange(range) {
+                    this.range = range;
+                  },
+                  setRange (p) {
+                    if (typeof p === 'number') {
+                      console.log(p)
+                      this.range = {
+                        startDate: moment().add(p, 'days'),
+                        endDate: moment()
+                      }
+                    }
+                  },
+                }
+            });
+        </pre>
+    </div>
+</section>
+<section>
+    <h2>custom style</h2>
+    <div id="custom-style" class="calendar-wrapper">
+        <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
+        <daterange class="calendar" :range="range" :lang="lang" @change="onChange"></daterange>
+    </div>
+    <div class="code-wrapper">
+        <pre>
+            &lt;div id="custom-style"&gt;
+                &lt;span&gt;{{range.startDate.format('YYYY-MM-DD')}}&lt;/span&gt;~&lt;span&gt;{{range.endDate.format('YYYY-MM-DD')}}&lt;/span&gt;
+                &lt;daterange :range="range" :lang="lang" @change="onChange"&gt;&lt;/daterange&gt;
+            &lt;/div&gt;
+            
+            
+            #custom-style .ayou-day-cell .selected {
+                background-color: orange;
+            }
+            #custom-style .ayou-day-cell .in-range {
+                background-color: orange;
+            }
+        </pre>
+    </div>
+</section>
 <script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="../dist/vue-date-range.js"></script>
@@ -41,18 +251,38 @@
         },
         data() {
           return {
-            dayOfMonth: moment().add(1, 'months'),
-            selectedDate: moment().add(1, 'months'),
             disableDaysBeforeToday: true,
             lang: 'en',
-            date: moment().format('YYYY-MM-DD')
+            date: moment()
           };
         },
         methods: {
           onChange(date) {
-            this.date = date.format('YYYY-MM-DD');
+            this.date = date;
+          },
+          setDate (offset) {
+            this.date = moment().add(offset, 'days')
           }
         }
+    });
+
+    new Vue({
+      el: '#calendarLunar',
+      components: {
+        'calendar':daterange.Calendar
+      },
+      data() {
+        return {
+          disableDaysBeforeToday: true,
+          lang: 'zh',
+          date: moment()
+        };
+      },
+      methods: {
+        onChange(date) {
+          this.date = date;
+        }
+      }
     });
 
 
@@ -73,7 +303,16 @@
         methods: {
           onChange(range) {
             this.range = range;
-          }
+          },
+          setRange (p) {
+            if (typeof p === 'number') {
+              console.log(p)
+              this.range = {
+                startDate: moment().add(p, 'days'),
+                endDate: moment()
+              }
+            }
+          },
         }
     });
 
