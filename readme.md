@@ -1,6 +1,6 @@
 A vue component for choosing dates and date ranges. Uses Moment.js for date operations. Support Chinese lunar.
 
-![vue-date-range-demo.png](http://om464nmvr.bkt.clouddn.com/vue-date-range-demo.png)
+![vue-date-range-demo.png]()
 
 [Live Demo](http://paradeto.com/vue-date-range/)
 
