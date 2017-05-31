@@ -1,5 +1,5 @@
 <template>
-  <span class="ayou-day-cell" @click="handleDayClick">
+  <span class="ayou-day-cell">
     <div class="solar" :class="{'selected': isSelected, 'passive': day.isPassive, 'in-range': isInRange}">{{day.dayMoment.date()}}</div>
     <div class="lunar" :class="{'passive': day.isPassive, 'festival': isFestival}" v-if="showLunar">
       {{lunarText}}
@@ -35,7 +35,17 @@
     },
     data () {
       return {
-        lunar: transformer.solar2lunar(this.day.dayMoment.year(), this.day.dayMoment.month() + 1, this.day.dayMoment.date())
+        lunar: this.solar2lunar(this.day)
+      }
+    },
+    watch: {
+      day (val) {
+        this.lunar = this.solar2lunar(val)
+      }
+    },
+    methods: {
+      solar2lunar (day) {
+        return transformer.solar2lunar(day.dayMoment.year(), day.dayMoment.month() + 1, day.dayMoment.date())
       }
     },
     computed: {
