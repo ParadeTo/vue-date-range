@@ -5,6 +5,8 @@
             :first-day-of-week="firstDayOfWeek"
             :day-of-month="dayOfMonth"
             :disable-days-before-today="disableDaysBeforeToday"
+            :days-disabled-start="daysDisabledStart"
+            :days-disabled-end="daysDisabledEnd"
             :range="rangeData"
             :showLunar="showLunar"
             @change="onChange">
@@ -39,6 +41,14 @@
       },
       disableDaysBeforeToday: {
         type: Boolean
+      },
+      daysDisabledStart: {
+        type: Object,
+        default: null
+      },
+      daysDisabledEnd: {
+        type: Object,
+        default: null
       },
       lang: {
         type: String,

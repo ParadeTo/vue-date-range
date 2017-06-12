@@ -52,6 +52,14 @@
       disableDaysBeforeToday: {
         type: Boolean
       },
+      daysDisabledStart: {
+        type: Object,
+        default: null
+      },
+      daysDisabledEnd: {
+        type: Object,
+        default: null
+      },
       range: {
         type: Object,
         default: null
@@ -146,9 +154,30 @@
           var _today = moment()
           if (this.disableDaysBeforeToday && Number(dayMoment.diff(_today, 'days')) <= -1) {
             this.days.push({ dayMoment, isPassive: true })
-          } else {
-            this.days.push({ dayMoment })
+            continue
           }
+
+          // set days between daysDisabledStart and daysDisabledEnd to isPassive
+          // TODO Add a method to handle days diff
+          if (this.daysDisabledStart && this.daysDisabledEnd) {
+            if (Number(dayMoment.diff(this.daysDisabledStart, 'days')) >= 0
+                && Number(dayMoment.diff(this.daysDisabledEnd, 'days')) < 0) {
+              this.days.push({ dayMoment, isPassive: true })
+              continue
+            }
+          } else if (this.daysDisabledStart) {
+            if (Number(dayMoment.diff(this.daysDisabledStart, 'days')) >= 0) {
+              this.days.push({ dayMoment, isPassive: true })
+              continue
+            }
+          } else if (this.daysDisabledEnd) {
+            if (Number(dayMoment.diff(this.daysDisabledEnd, 'days')) < 0) {
+              this.days.push({ dayMoment, isPassive: true })
+              continue
+            }
+          }
+
+          this.days.push({ dayMoment })
         }
 
         // Next month's days

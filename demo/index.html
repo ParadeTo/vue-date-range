@@ -84,6 +84,7 @@
     <div id="calendar" class="calendar-wrapper">
         <span>{{date.format('YYYY-MM-DD')}}</span>
         <calendar class="calendar"
+                  :days-disabled-start="daysDisabledStart"
                   :first-day-of-week="1"
                   :default-date="date"
                   :lang="lang" @change="onChange"></calendar>
@@ -172,7 +173,12 @@
     <h2>date-range</h2>
     <div id="range" class="calendar-wrapper">
         <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
-        <daterange class="calendar" :default-range="range" :lang="lang" @change="onChange"></daterange>
+        <daterange
+                class="calendar"
+                :days-disabled-start="daysDisabledStart"
+                :days-disabled-end="daysDisabledEnd"
+                :default-range="range"
+                :lang="lang" @change="onChange"></daterange>
         <button @click.stop.prevent="setRange(-7)">Last 7 days</button>
         <button @click.stop.prevent="setRange(-30)">Last 1 month</button>
     </div>
@@ -251,7 +257,9 @@
         },
         data() {
           return {
-            disableDaysBeforeToday: true,
+//            disableDaysBeforeToday: true,
+            daysDisabledStart: moment(),
+//            daysDisabledEnd: moment().add(1, 'days'),
             lang: 'en',
             date: moment()
           };
@@ -294,6 +302,8 @@
         data() {
           return {
             lang: 'en',
+            daysDisabledStart: moment(),
+            daysDisabledEnd: moment().add(2, 'days'),
             range: {
               startDate: moment(),
               endDate: moment().add(7, 'days')
