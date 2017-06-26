@@ -1,3 +1,6 @@
+# vue-date-range 
+[![Build Status](https://travis-ci.org/ParadeTo/vue-date-range.svg?branch=master)](https://travis-ci.org/ParadeTo/vue-date-range)
+
 A vue component for choosing dates and date ranges. Uses Moment.js for date operations. Support Chinese lunar.
 
 ![vue-date-range-demo.png](http://om464nmvr.bkt.clouddn.com/vue-date-range-demo.png)
