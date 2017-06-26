@@ -6,6 +6,7 @@
   "scripts": {
     "test": "karma start --single-run",
     "unit": "karma start --watch",
+    "coveralls": "npm run test -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "build": "webpack"
   },
   "repository": {
