@@ -4,7 +4,8 @@
   "description": "A vue component for choosing dates and date ranges. Uses Moment.js for date operations.",
   "main": "src/index.js",
   "scripts": {
-    "test": "karma start",
+    "test": "karma start --single-run",
+    "unit": "karma start --watch",
     "build": "webpack"
   },
   "repository": {
