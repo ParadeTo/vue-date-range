@@ -193,8 +193,10 @@
       },
       isInRange (day) {
         if (this.range && this.range.startDate && this.range.endDate && day && day.dayMoment) {
-          return day.dayMoment.isBetween(this.range['startDate'].clone().subtract(1, 'hours'), this.range['endDate'].clone().add(1, 'hours')) ||
-            day.dayMoment.isBetween(this.range['endDate'], this.range['startDate'].clone().add(1, 'hours'))
+          return day.dayMoment.isBetween(this.range['startDate'], this.range['endDate']) ||
+            day.dayMoment.isBetween(this.range['endDate'], this.range['startDate']) ||
+            day.dayMoment.format('YYYY-MM-DD') === this.range['startDate'].format('YYYY-MM-DD') ||
+            day.dayMoment.format('YYYY-MM-DD') === this.range['endDate'].format('YYYY-MM-DD')
         }
       },
       handleDayClick (day) {
