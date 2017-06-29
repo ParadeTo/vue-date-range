@@ -60,6 +60,11 @@
         type: Object,
         default: null
       },
+      // TODO realize this feature
+      // the day will be passed as argument to it to decide if it is disabled or not
+      disabledFunc: {
+        type: Function
+      },
       range: {
         type: Object,
         default: null
@@ -152,6 +157,7 @@
           const dayMoment = this.dayOfMonth.clone().date(i)
           // set days before today to isPassive
           var _today = moment()
+
           if (this.disableDaysBeforeToday && Number(dayMoment.diff(_today, 'days')) <= -1) {
             this.days.push({ dayMoment, isPassive: true })
             continue
@@ -197,6 +203,32 @@
             day.dayMoment.isBetween(this.range['endDate'], this.range['startDate']) ||
             day.dayMoment.format('YYYY-MM-DD') === this.range['startDate'].format('YYYY-MM-DD') ||
             day.dayMoment.format('YYYY-MM-DD') === this.range['endDate'].format('YYYY-MM-DD')
+        }
+      },
+      // TODO
+      isDisabled (dayMoment) {
+        if (this.disableDaysBeforeToday && Number(dayMoment.diff(_today, 'days')) <= -1) {
+          return true
+        }
+
+        if (this.daysDisabledStart && this.daysDisabledEnd) {
+          console.log(1, Number(dayMoment.diff(this.daysDisabledStart, 'days')))
+          if (Number(dayMoment.diff(this.daysDisabledStart, 'days')) >= 0
+            && Number(dayMoment.diff(this.daysDisabledEnd, 'days')) < 0) {
+            return true
+          }
+        } else if (this.daysDisabledStart) {
+          console.log(2, Number(dayMoment.diff(this.daysDisabledStart, 'days')))
+          if (Number(dayMoment.diff(this.daysDisabledStart, 'days')) >= 0) {
+            this.days.push({ dayMoment, isPassive: true })
+            return true
+          }
+        } else if (this.daysDisabledEnd) {
+          console.log(3, Number(dayMoment.diff(this.daysDisabledStart, 'days')))
+          if (Number(dayMoment.diff(this.daysDisabledEnd, 'days')) < 0) {
+            this.days.push({ dayMoment, isPassive: true })
+            return true
+          }
         }
       },
       handleDayClick (day) {
