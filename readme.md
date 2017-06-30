@@ -162,12 +162,24 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
 * disable-days-before-today: Disable days before today or not.
 * days-disabled-start: Disable days after this day.
 * days-disabled-end: Disable days before this day.
+* disabled-func: Use to decide if the day is disabled or not.
+  ```javascript
+    ...
+     disabledFunc: function (dayMoment) {
+       var date = dayMoment.date()
+       if (date % 2 === 1) {
+         return true
+       }
+       return false
+     }
+    ...
+  ```
 * first-day-of-week: Set the first day of Week. Default is 0 (Sunday).
 * lang: Language, see in src/locals.js
 * default-date: Init the selected date. Only for Calendar.
 * range: The selected date range. Like this: 
 
-  ```
+  ```javascript
   range: {startDate: moment(), endDate: moment().add(7, 'days')}
   ```
   
