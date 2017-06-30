@@ -60,10 +60,10 @@
         type: Object,
         default: null
       },
-      // TODO realize this feature
       // the day will be passed as argument to it to decide if it is disabled or not
       disabledFunc: {
-        type: Function
+        type: Function,
+        default: null
       },
       range: {
         type: Object,
@@ -86,10 +86,12 @@
       }
     },
     watch: {
+      // if used in DateRange, show month that contains endDate
       range (val) {
         this.date = val.endDate
         this.resetDayOfMonth()
       },
+      // show month that contains defaultDate
       defaultDate (val) {
         this.date = val
         this.resetDayOfMonth()
@@ -155,35 +157,8 @@
         // Current month's days
         for (let i = 1; i <= dayCount; i++) {
           const dayMoment = this.dayOfMonth.clone().date(i)
-          // set days before today to isPassive
-          var _today = moment()
-
-          if (this.disableDaysBeforeToday && Number(dayMoment.diff(_today, 'days')) <= -1) {
-            this.days.push({ dayMoment, isPassive: true })
-            continue
-          }
-
-          // set days between daysDisabledStart and daysDisabledEnd to isPassive
-          // TODO Add a method to handle days diff
-          if (this.daysDisabledStart && this.daysDisabledEnd) {
-            if (Number(dayMoment.diff(this.daysDisabledStart, 'days')) >= 0
-                && Number(dayMoment.diff(this.daysDisabledEnd, 'days')) < 0) {
-              this.days.push({ dayMoment, isPassive: true })
-              continue
-            }
-          } else if (this.daysDisabledStart) {
-            if (Number(dayMoment.diff(this.daysDisabledStart, 'days')) >= 0) {
-              this.days.push({ dayMoment, isPassive: true })
-              continue
-            }
-          } else if (this.daysDisabledEnd) {
-            if (Number(dayMoment.diff(this.daysDisabledEnd, 'days')) < 0) {
-              this.days.push({ dayMoment, isPassive: true })
-              continue
-            }
-          }
-
-          this.days.push({ dayMoment })
+          var isPassive = this.isPassive(dayMoment)
+          this.days.push({ dayMoment, isPassive })
         }
 
         // Next month's days
@@ -205,30 +180,34 @@
             day.dayMoment.format('YYYY-MM-DD') === this.range['endDate'].format('YYYY-MM-DD')
         }
       },
-      // TODO
-      isDisabled (dayMoment) {
-        if (this.disableDaysBeforeToday && Number(dayMoment.diff(_today, 'days')) <= -1) {
-          return true
+      isPassive (dayMoment) {
+        var {disableDaysBeforeToday, daysDisabledStart, daysDisabledEnd, disabledFunc} = this
+
+        // use disabledFunc to decide
+        if (disabledFunc) {
+          return disabledFunc(dayMoment)
         }
 
-        if (this.daysDisabledStart && this.daysDisabledEnd) {
-          console.log(1, Number(dayMoment.diff(this.daysDisabledStart, 'days')))
-          if (Number(dayMoment.diff(this.daysDisabledStart, 'days')) >= 0
-            && Number(dayMoment.diff(this.daysDisabledEnd, 'days')) < 0) {
+        // set days between daysDisabledStart and daysDisabledEnd to isPassive
+        if (daysDisabledStart && daysDisabledEnd) {
+          if (Number(dayMoment.diff(daysDisabledStart, 'days')) >= 0
+            && Number(dayMoment.diff(daysDisabledEnd, 'days')) < 0) {
             return true
           }
-        } else if (this.daysDisabledStart) {
-          console.log(2, Number(dayMoment.diff(this.daysDisabledStart, 'days')))
-          if (Number(dayMoment.diff(this.daysDisabledStart, 'days')) >= 0) {
-            this.days.push({ dayMoment, isPassive: true })
+        } else if (daysDisabledStart) {
+          if (Number(dayMoment.diff(daysDisabledStart, 'days')) >= 0) {
             return true
           }
         } else if (this.daysDisabledEnd) {
-          console.log(3, Number(dayMoment.diff(this.daysDisabledStart, 'days')))
-          if (Number(dayMoment.diff(this.daysDisabledEnd, 'days')) < 0) {
-            this.days.push({ dayMoment, isPassive: true })
+          if (Number(dayMoment.diff(daysDisabledEnd, 'days')) < 0) {
             return true
           }
+        }
+
+        // set days before today to isPassive
+        var _today = moment()
+        if (disableDaysBeforeToday && Number(dayMoment.diff(_today, 'days')) <= -1) {
+          return true
         }
       },
       handleDayClick (day) {

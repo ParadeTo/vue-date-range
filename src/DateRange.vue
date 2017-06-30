@@ -7,6 +7,7 @@
             :disable-days-before-today="disableDaysBeforeToday"
             :days-disabled-start="daysDisabledStart"
             :days-disabled-end="daysDisabledEnd"
+            :disabled-func="disabledFunc"
             :range="rangeData"
             :showLunar="showLunar"
             @change="onChange">
@@ -48,6 +49,10 @@
       },
       daysDisabledEnd: {
         type: Object,
+        default: null
+      },
+      disabledFunc: {
+        type: Function,
         default: null
       },
       lang: {
