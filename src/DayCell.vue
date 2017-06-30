@@ -1,5 +1,5 @@
 <template>
-  <span class="ayou-day-cell" @click.stop.prevent="handleDayClick()" :title="lunarText">
+  <span class="ayou-day-cell" @click.stop.prevent="handleDayClick()" :title="showLunar && lunarText">
     <div class="solar" :class="{'selected': isSelected, 'passive': day.isPassive, 'in-range': isInRange}">{{day.dayMoment.date()}}</div>
     <div class="lunar" :class="{'passive': day.isPassive, 'festival': isFestival}" v-if="showLunar">
       {{lunarText}}
