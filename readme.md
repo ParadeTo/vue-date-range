@@ -181,7 +181,7 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
 | addr. | language |
 | ---- | ---- |
 |da|Danish|
-|en|Englist|
+|en|English|
 |es|Spanish|
 |fi|Finnish|
 |fr|French|
