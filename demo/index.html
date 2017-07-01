@@ -85,6 +85,8 @@
         <span>{{date.format('YYYY-MM-DD')}}</span>
         <calendar class="calendar"
                   :days-disabled-start="daysDisabledStart"
+                  :days-disabled-end="daysDisabledEnd"
+                  :disabled-func="disabledFunc"
                   :first-day-of-week="1"
                   :default-date="date"
                   :lang="lang" @change="onChange"></calendar>
@@ -258,8 +260,16 @@
         data() {
           return {
 //            disableDaysBeforeToday: true,
-            daysDisabledStart: moment(),
-//            daysDisabledEnd: moment().add(1, 'days'),
+            daysDisabledStart: moment('2017-06-10'),
+            daysDisabledEnd: moment('2017-06-16'),
+            disabledFunc: function (dayMoment) {
+              var date = dayMoment.date()
+              console.log(date)
+              if (date % 2 === 1) {
+                return true
+              }
+              return false
+            },
             lang: 'en',
             date: moment()
           };
@@ -302,8 +312,8 @@
         data() {
           return {
             lang: 'en',
-            daysDisabledStart: moment(),
-            daysDisabledEnd: moment().add(2, 'days'),
+            daysDisabledStart: moment().add(-10, 'days'),
+            daysDisabledEnd: null,
             range: {
               startDate: moment(),
               endDate: moment().add(7, 'days')

@@ -158,13 +158,14 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
 # Props
 ## Calendar
 * show-lunar: Show lunar or not. Default is false.
-* day-of-month: Use to init calendar month, any day in the month is ok. Default is today.
+* ~~day-of-month: Use to init calendar month, any day in the month is ok. Default is today.~~
 * disable-days-before-today: Disable days before today or not.
 * days-disabled-start: Disable days after this day.
 * days-disabled-end: Disable days before this day.
 * disabled-func: Use to decide if the day is disabled or not.
   ```javascript
     ...
+	 // set odd days to disabled
      disabledFunc: function (dayMoment) {
        var date = dayMoment.date()
        if (date % 2 === 1) {
@@ -175,14 +176,41 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
     ...
   ```
 * first-day-of-week: Set the first day of Week. Default is 0 (Sunday).
-* lang: Language, see in src/locals.js
+* lang: Language
+
+| addr. | language |
+| ---- | ---- |
+|da|Danish|
+|en|Englist|
+|es|Spanish|
+|fi|Finnish|
+|fr|French|
+|hr|Hrvatski|
+|it|Italian|
+|lt|Lithuanian|
+|nl|Nederlandse|
+|de|German|
+|pt-br|Portuguese|
+|vi|Vietnamese|
+|zh|Chinese|
+|ja|Japanese|
+|he|Hebrew|
+|cs|Czech|
+|ru|Russian|
+|bg|Bulgarian|
+|sv|Swedish|
+|th|Thai|
+|ro|Roman|
+|sl-si|Slovenian|
+|uk|Ukrainian|
+
 * default-date: Init the selected date. Only for Calendar.
-* range: The selected date range. Like this: 
+* range: The selected date range. e.g.: 
 
   ```javascript
   range: {startDate: moment(), endDate: moment().add(7, 'days')}
   ```
-  
+
 ## DateRange
 This component is build on ``Calendar``, so it has all the props of ``Calendar`` except ``default-date``
 Also it has its specific props: 

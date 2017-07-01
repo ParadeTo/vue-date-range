@@ -3,7 +3,6 @@
     <calendar
             :lang="lang"
             :first-day-of-week="firstDayOfWeek"
-            :day-of-month="dayOfMonth"
             :disable-days-before-today="disableDaysBeforeToday"
             :days-disabled-start="daysDisabledStart"
             :days-disabled-end="daysDisabledEnd"
@@ -32,12 +31,6 @@
         type: Number,
         default: function () {
           return moment.localeData().firstDayOfWeek()
-        }
-      },
-      dayOfMonth: {
-        type: Object,
-        default: function () {
-          return moment()
         }
       },
       disableDaysBeforeToday: {
