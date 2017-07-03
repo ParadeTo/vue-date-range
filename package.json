@@ -1,8 +1,8 @@
 {
   "name": "vue-date-range",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A vue component for choosing dates and date ranges. Uses Moment.js for date operations.",
-  "main": "src/index.js",
+  "main": "dist/vue-date-range.min.js",
   "scripts": {
     "test": "karma start --single-run",
     "unit": "karma start --watch",

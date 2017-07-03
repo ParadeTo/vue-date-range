@@ -6,7 +6,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'vue-date-range.js',
+    filename: 'vue-date-range.min.js',
     library: 'daterange',
     libraryTarget: 'umd'
   },
