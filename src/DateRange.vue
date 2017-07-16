@@ -52,13 +52,16 @@
         type: String,
         default: 'zh'
       },
-      defaultRange: {
+//      defaultRange: {
+//        type: Object
+//      }
+      syncRange: {
         type: Object
       }
     },
     data () {
       return {
-        rangeData: this.defaultRange || {
+        rangeData: this.syncRange || {
           startDate: null,
           endDate: null
         },
@@ -67,7 +70,7 @@
       }
     },
     watch: {
-      defaultRange (val) {
+      syncRange (val) {
         this.rangeData = val
         this.step = 0
       }
@@ -94,6 +97,7 @@
         const eTs = this.rangeData.endDate.unix()
         const startDate = sTs <= eTs ? this.rangeData.startDate : this.rangeData.endDate
         const endDate = sTs > eTs ? this.rangeData.startDate : this.rangeData.endDate
+        this.$emit('update:syncRange', {startDate, endDate})
         this.$emit('change', {startDate, endDate})
       }
     }

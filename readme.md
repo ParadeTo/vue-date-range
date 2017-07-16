@@ -77,7 +77,7 @@ export default {
 ```
 
 ## browser
-Download vue-date-range.js from dist/ and import in your web page. Example:
+Download vue-date-range.min.js from dist/ and import in your web page. Example:
 
 ```
 ...
@@ -87,13 +87,13 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
               :show-lunar="true"
               :first-day-of-week="1"
               :disable-days-before-today="disableDaysBeforeToday"
-              :default-date="date"
+              :sync-date="date"
               :lang="lang" @change="onChange"></calendar>
 </div>
 ...
 <div id="range" class="calendar-wrapper">
     <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
-    <daterange class="calendar" :default-range="range" :lang="lang" @change="onChange"></daterange>
+    <daterange class="calendar" :sync-range="range" :lang="lang" @change="onChange"></daterange>
     <button @click.stop.prevent="setRange(-7)">Last 7 days</button>
     <button @click.stop.prevent="setRange(-30)">Last 1 month</button>
 </div>
@@ -101,7 +101,7 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
 
 <script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script src="../dist/vue-date-range.js"></script>
+<script src="../dist/vue-date-range.min.js"></script>
 <script>
     new Vue({
         el: '#calendarLunar',
@@ -155,6 +155,13 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
 </script>
 ```
 
+# .sync
+For Vue2.3.0+, we can use [`.sync` modifier](https://vuejs.org/v2/guide/components.html#sync-Modifier):
+```javascript
+<calendar sync-date.sync="date"></calendar>
+<date-range sync-range.sync="range"></date-range>
+```
+
 # Props
 ## Calendar
 * show-lunar: Show lunar or not. Default is false.
@@ -204,7 +211,11 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
 |sl-si|Slovenian|
 |uk|Ukrainian|
 
-* default-date: Init the selected date. Only for Calendar.
+* sync-date: The default selected date. Can be used as the “two-way binding” for date (Vue 2.3.0+). e.g.:
+  ```html
+  <calendar sync-date.sync="date"></calendar>
+  ```
+* ~~default-date: Init the selected date. Only for Calendar.~~(use syncDate instead)
 * range: The selected date range. e.g.: 
 
   ```javascript
@@ -212,7 +223,11 @@ Download vue-date-range.js from dist/ and import in your web page. Example:
   ```
 
 ## DateRange
-This component is build on ``Calendar``, so it has all the props of ``Calendar`` except ``default-date``
+This component is build on ``Calendar``, so it has all the props of ``Calendar`` except ``sync-date``
 Also it has its specific props: 
 
-* defaultRange: Use to init the date range
+* sync-range: The default date range. Can be used as the “two-way binding” for range (Vue 2.3.0+). e.g.:
+  ```html
+  <date-range sync-range.sync="range"></date-range>
+  ```
+* ~~defaultRange: Used to init the date range~~

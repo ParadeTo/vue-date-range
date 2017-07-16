@@ -15,7 +15,7 @@ const month = moment().month()
 describe('Test Calendar:',  () => {
   commonUnit(Calendar)
 
-  it('days between range should have in-range class and when range is changed it should also be true', () => {
+  it('days between range should have in-range class and when range is changed it should also be true', (done) => {
     const start = moment(`${year}-${formatMonth(month+1)}-14`)
     const end = moment(`${year}-${formatMonth(month+1)}-16`)
 
@@ -42,10 +42,11 @@ describe('Test Calendar:',  () => {
     vm.$nextTick(() => {
       $spans = vm.$el.querySelectorAll(".days span .in-range")
       expect($spans.length).to.equal(2)
+      done()
     })
   })
 
-  it('the default date should has selected class and when it change Calender\'s month will change too', () => {
+  it('the syncDate should has selected class and when it change Calender\'s month will change too', (done) => {
     // next month
     let nextMonth = month + 1
     let nextYear = year
@@ -55,18 +56,18 @@ describe('Test Calendar:',  () => {
     }
     nextMonth = formatMonth(nextMonth + 1)
 
-    const defaultDate = moment(`${nextYear}-${nextMonth}-15`)
+    const syncDate = moment(`${nextYear}-${nextMonth}-15`)
 
     let vm = getRenderedVm(Calendar)
 
-    vm.defaultDate = defaultDate
+    vm.syncDate = syncDate
 
     vm.$nextTick(() => {
       const _month = vm.$el.querySelector(".month-year span span").innerText
       expect(_month).to.equal(nextMonth)
 
       const $spans = vm.$el.querySelectorAll(".days span")
-      const pos = getDayPositionInCalendar(defaultDate, 0)
+      const pos = getDayPositionInCalendar(syncDate, 0)
       for (var i = 0, len = $spans.length; i < len; i++) {
         if (i === pos-1) {
           var $solar = $spans[i].querySelector(".solar")
@@ -74,6 +75,8 @@ describe('Test Calendar:',  () => {
           expect(hasCls).to.equal(true)
         }
       }
+
+      done()
     })
   })
 })

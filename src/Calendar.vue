@@ -73,7 +73,11 @@
         type: String,
         default: 'zh'
       },
-      defaultDate: {
+      // use syncDate instead
+//      defaultDate: {
+//        type: Object
+//      },
+      syncDate: {
         type: Object
       }
     },
@@ -82,7 +86,7 @@
         weekDays: [],
         days: [],
         dayOfMonth: moment(), // Any day of current displaying month
-        date: this.defaultDate || moment()
+        date: this.syncDate || moment()
       }
     },
     watch: {
@@ -92,7 +96,7 @@
         this.resetDayOfMonth()
       },
       // show month that contains defaultDate
-      defaultDate (val) {
+      syncDate (val) {
         this.date = val
         this.resetDayOfMonth()
       }
@@ -212,6 +216,7 @@
       },
       handleDayClick (day) {
         this.date = day.dayMoment
+        this.$emit('update:syncDate', day.dayMoment)
         this.$emit('change', day.dayMoment)
       },
       changeMonth (delta) {

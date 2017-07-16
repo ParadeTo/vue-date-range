@@ -88,7 +88,7 @@
                   :days-disabled-end="daysDisabledEnd"
                   :disabled-func="disabledFunc"
                   :first-day-of-week="1"
-                  :default-date="date"
+                  :sync-date.sync="date"
                   :lang="lang" @change="onChange"></calendar>
         <button @click.stop.prevent="setDate(-1)">Yesterday</button>
         <button @click.stop.prevent="setDate(0)">Today</button>
@@ -179,7 +179,7 @@
                 class="calendar"
                 :days-disabled-start="daysDisabledStart"
                 :days-disabled-end="daysDisabledEnd"
-                :default-range="range"
+                :sync-range="range"
                 :lang="lang" @change="onChange"></daterange>
         <button @click.stop.prevent="setRange(-7)">Last 7 days</button>
         <button @click.stop.prevent="setRange(-30)">Last 1 month</button>
@@ -250,7 +250,7 @@
 </section>
 <script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script src="../dist/vue-date-range.js"></script>
+<script src="../dist/vue-date-range.min.js"></script>
 <script>
     new Vue({
         el: '#calendar',
@@ -271,8 +271,14 @@
               return false
             },
             lang: 'en',
-            date: moment()
+            date: moment(),
+            defaultDate: moment().add(1, 'months')
           };
+        },
+        created: function () {
+          setTimeout(() => {
+            this.date = moment().add(1, 'months')
+          }, 1000)
         },
         methods: {
           onChange(date) {
@@ -319,6 +325,14 @@
               endDate: moment().add(7, 'days')
             }
           };
+        },
+        created: function () {
+            setTimeout(() => {
+              this.range = {
+                    startDate: moment().add(1, 'months'),
+                    endDate: moment().add(7, 'days').add(1, 'months')
+                }
+            }, 1000)
         },
         methods: {
           onChange(range) {
