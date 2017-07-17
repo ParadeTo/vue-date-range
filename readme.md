@@ -18,7 +18,7 @@ A vue component for choosing dates and date ranges. Uses Moment.js for date oper
           :show-lunar="true"
           :first-day-of-week="1"
           :disable-days-before-today="disableDaysBeforeToday"
-          :default-date="date"
+          :sync-date.sync="date"
           :lang="lang" @change="onChange"></calendar>
 ...
 import {Calendar} from 'vue-date-range';
@@ -43,7 +43,7 @@ export default {
 
 ### DateRange
 ```
-<daterange class="calendar" :default-range="range" :lang="lang" @change="onChange"></daterange>
+<daterange class="calendar" :sync-range.sync="range" :lang="lang" @change="onChange"></daterange>
 ...
 import {DateRange} from 'vue-date-range';
 export default {
@@ -158,8 +158,15 @@ Download vue-date-range.min.js from dist/ and import in your web page. Example:
 # .sync
 For Vue2.3.0+, we can use [`.sync` modifier](https://vuejs.org/v2/guide/components.html#sync-Modifier):
 ```javascript
-<calendar sync-date.sync="date"></calendar>
-<date-range sync-range.sync="range"></date-range>
+<calendar :sync-date.sync="date"></calendar>
+<date-range :sync-range.sync="range"></date-range>
+```
+
+# v-model
+We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#Form-Input-Components-using-Custom-Events) (these can be configured in 2.2.0+):
+```javascript
+<calendar v-model="date"></calendar>
+<date-range v-model="range"></date-range>
 ```
 
 # Props
@@ -213,7 +220,7 @@ For Vue2.3.0+, we can use [`.sync` modifier](https://vuejs.org/v2/guide/componen
 
 * sync-date: The default selected date. Can be used as the “two-way binding” for date (Vue 2.3.0+). e.g.:
   ```html
-  <calendar sync-date.sync="date"></calendar>
+  <calendar :sync-date.sync="date"></calendar>
   ```
 * ~~default-date: Init the selected date. Only for Calendar.~~(use syncDate instead)
 * range: The selected date range. e.g.: 
@@ -228,6 +235,6 @@ Also it has its specific props:
 
 * sync-range: The default date range. Can be used as the “two-way binding” for range (Vue 2.3.0+). e.g.:
   ```html
-  <date-range sync-range.sync="range"></date-range>
+  <date-range :sync-range.sync="range"></date-range>
   ```
 * ~~defaultRange: Used to init the date range~~

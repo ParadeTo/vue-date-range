@@ -57,6 +57,9 @@
 //      }
       syncRange: {
         type: Object
+      },
+      value: {
+        type: Object
       }
     },
     data () {
@@ -71,6 +74,10 @@
     },
     watch: {
       syncRange (val) {
+        this.rangeData = val
+        this.step = 0
+      },
+      value (val) {
         this.rangeData = val
         this.step = 0
       }
@@ -97,7 +104,9 @@
         const eTs = this.rangeData.endDate.unix()
         const startDate = sTs <= eTs ? this.rangeData.startDate : this.rangeData.endDate
         const endDate = sTs > eTs ? this.rangeData.startDate : this.rangeData.endDate
+        // to support three ways to get value
         this.$emit('update:syncRange', {startDate, endDate})
+        this.$emit('input', {startDate, endDate})
         this.$emit('change', {startDate, endDate})
       }
     }

@@ -88,7 +88,7 @@
                   :days-disabled-end="daysDisabledEnd"
                   :disabled-func="disabledFunc"
                   :first-day-of-week="1"
-                  :sync-date.sync="date"
+                  v-model="date"
                   :lang="lang" @change="onChange"></calendar>
         <button @click.stop.prevent="setDate(-1)">Yesterday</button>
         <button @click.stop.prevent="setDate(0)">Today</button>
@@ -179,7 +179,7 @@
                 class="calendar"
                 :days-disabled-start="daysDisabledStart"
                 :days-disabled-end="daysDisabledEnd"
-                :sync-range="range"
+                v-model="range"
                 :lang="lang" @change="onChange"></daterange>
         <button @click.stop.prevent="setRange(-7)">Last 7 days</button>
         <button @click.stop.prevent="setRange(-30)">Last 1 month</button>
@@ -213,7 +213,6 @@
                   },
                   setRange (p) {
                     if (typeof p === 'number') {
-                      console.log(p)
                       this.range = {
                         startDate: moment().add(p, 'days'),
                         endDate: moment()
@@ -264,7 +263,6 @@
             daysDisabledEnd: moment('2017-06-16'),
             disabledFunc: function (dayMoment) {
               var date = dayMoment.date()
-              console.log(date)
               if (date % 2 === 1) {
                 return true
               }
@@ -340,7 +338,6 @@
           },
           setRange (p) {
             if (typeof p === 'number') {
-              console.log(p)
               this.range = {
                 startDate: moment().add(p, 'days'),
                 endDate: moment()

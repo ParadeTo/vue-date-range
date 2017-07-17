@@ -79,6 +79,9 @@
 //      },
       syncDate: {
         type: Object
+      },
+      value: {
+        type: Object
       }
     },
     data () {
@@ -97,6 +100,10 @@
       },
       // show month that contains defaultDate
       syncDate (val) {
+        this.date = val
+        this.resetDayOfMonth()
+      },
+      value (val) {
         this.date = val
         this.resetDayOfMonth()
       }
@@ -216,7 +223,9 @@
       },
       handleDayClick (day) {
         this.date = day.dayMoment
+        // to support three ways to get value
         this.$emit('update:syncDate', day.dayMoment)
+        this.$emit('input', day.dayMoment)
         this.$emit('change', day.dayMoment)
       },
       changeMonth (delta) {
