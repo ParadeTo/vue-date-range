@@ -274,6 +274,25 @@
                     <!--</div>-->
                 <!--</div>-->
             </div>
+
+            <div class="columns">
+                <div class="column is-6">
+                    <div class="control is-horizontal">
+                        <div class="control-label is-normal">
+                            <label class="label">monthYearFormat</label>
+                        </div>
+                        <div class="control">
+                            <div class="control is-full">
+                                <div class="control">
+                                    <div class="control">
+                                        <input type="text" class="input" v-model="monthYearFormat">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -291,6 +310,7 @@
                 :days-disabled-end="daysDisabledEnd"
                 :default-date="defaultDate"
                 :show-lunar="showLunar"
+                :month-year-format="monthYearFormat"
                 v-if="showCalendar"></calendar>
         <daterange
                 @change="onChange"
@@ -301,6 +321,7 @@
                 :days-disabled-end="daysDisabledEnd"
                 :default-range="defaultRange"
                 :show-lunar="showLunar"
+                :month-year-format="monthYearFormat"
                 v-if="!showCalendar">
         </daterange>
     </div>
@@ -408,7 +429,8 @@
         defaultDate: null,
         defaultRange: null,
         firstDayOfWeek: 0,
-        lang: 'zh'
+        lang: 'zh',
+        monthYearFormat: 'MM - YYYY'
       };
     },
     watch: {
@@ -431,6 +453,9 @@
         this.resetComp()
       },
       defaultRange: function () {
+        this.resetComp()
+      },
+      monthYearFormat: function() {
         this.resetComp()
       }
     },
