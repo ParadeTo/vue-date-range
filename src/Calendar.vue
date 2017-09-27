@@ -5,9 +5,7 @@
         <i class="month-arrow month-arrow-prev"></i>
       </button>
       <span>
-        <span>{{dayOfMonth.format('MM')}}</span>
-        <span> - </span>
-        <span>{{dayOfMonth.format('YYYY')}}</span>
+        <span>{{dayOfMonth.format(monthYearFormat)}}</span>
       </span>
       <button class="month-button" style="float: right" @click.stop.prevent="changeMonth(1)">
         <i class="month-arrow month-arrow-next"></i>
@@ -82,6 +80,10 @@
       },
       value: {
         type: Object
+      },
+      monthYearFormat: {
+        default: 'MM - YYYY',
+        type: String
       }
     },
     data () {
