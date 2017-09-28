@@ -290,7 +290,7 @@
     <h2>custom style</h2>
     <div id="custom-style" class="calendar-wrapper">
         <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
-        <daterange class="calendar" :range="range" :lang="lang" @change="onChange"></daterange>
+        <daterange class="calendar" v-model="range" :lang="lang" @change="onChange"></daterange>
     </div>
     <div class="code-wrapper">
         <pre>
