@@ -181,7 +181,7 @@ exports.commonUnit = function (Comp) {
 
     vm.$nextTick(() => {
       const _month = vm.$el.querySelector(".month-year span span").innerText
-      expect(_month).to.equal(nextMonth)
+      expect(_month).to.match(new RegExp('^' + nextMonth))
       done()
     })
   })
@@ -202,7 +202,7 @@ exports.commonUnit = function (Comp) {
 
     vm.$nextTick(() => {
       const _month = vm.$el.querySelector(".month-year span span").innerText
-      expect(_month).to.equal(prevMonth)
+      expect(_month).to.match(new RegExp('^' + prevMonth))
       done()
     })
   })
