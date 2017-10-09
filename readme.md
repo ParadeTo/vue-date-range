@@ -191,6 +191,7 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
   ```
 * first-day-of-week: Set the first day of Week. Default is 0 (Sunday).
 * lang: Language
+* monthYearFormat: The displaying format for month and year. Default is 'MM - YYYY'.
 
 | addr. | language |
 | ---- | ---- |
