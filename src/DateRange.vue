@@ -8,6 +8,7 @@
             :days-disabled-end="daysDisabledEnd"
             :disabled-func="disabledFunc"
             :range="rangeData"
+            :value="null"
             :showLunar="showLunar"
             :month-year-format="monthYearFormat"
             @change="onChange">

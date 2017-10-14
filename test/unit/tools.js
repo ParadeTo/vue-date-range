@@ -4,7 +4,7 @@
 import Vue from 'vue'
 import moment from 'moment'
 
-function getRenderedVm(Component, propsData) {
+function getRenderedVm(Component, propsData = {}) {
   const Ctor = Vue.extend(Component)
   const vm = new Ctor({ propsData }).$mount()
   return vm
@@ -148,9 +148,6 @@ exports.commonUnit = function (Comp) {
 
   it('click a day will change selected day', (done) => {
     let vm = getRenderedVm(Comp)
-    const date = moment().date()
-    const dateInCalendar = vm.$el.querySelector(".days span .selected").innerText
-    expect(dateInCalendar.toString()).to.equal(date.toString())
 
     const $spans = vm.$el.querySelectorAll(".days span")
     const clickIndex = getUnPassiveDay($spans)
