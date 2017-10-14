@@ -64,7 +64,7 @@ describe('Test Calendar:',  () => {
 
     vm.$nextTick(() => {
       const _month = vm.$el.querySelector(".month-year span span").innerText
-      expect(_month).to.equal(nextMonth)
+      expect(_month).to.match(new RegExp('^' + nextMonth))
 
       const $spans = vm.$el.querySelectorAll(".days span")
       const pos = getDayPositionInCalendar(syncDate, 0)

@@ -10,6 +10,7 @@
             :range="rangeData"
             :value="null"
             :showLunar="showLunar"
+            :month-year-format="monthYearFormat"
             @change="onChange">
 
     </calendar>
@@ -61,6 +62,10 @@
       },
       value: {
         type: Object
+      },
+      monthYearFormat: {
+        default: 'MM - YYYY',
+        type: String
       }
     },
     data () {
