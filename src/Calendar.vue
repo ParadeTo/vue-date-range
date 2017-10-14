@@ -71,10 +71,6 @@
         type: String,
         default: 'zh'
       },
-      // use syncDate instead
-//      defaultDate: {
-//        type: Object
-//      },
       syncDate: {
         type: Object
       },
@@ -109,7 +105,7 @@
     watch: {
       // if used in DateRange, show month that contains endDate
       range (val) {
-        this.date = val.endDate
+//        this.date = val.endDate
         this.resetDayOfMonth()
       },
       // show month that contains defaultDate

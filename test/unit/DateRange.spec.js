@@ -3,6 +3,7 @@ import moment from 'moment'
 import Calendar from '../../src/Calendar.vue'
 import DateRange from '../../src/DateRange.vue'
 import {
+  getRenderedVm,
   getUnPassiveDay,
   getClickEvent,
   commonUnit}
@@ -47,5 +48,31 @@ describe('Test DateRange:',  () => {
       expect(startDate.date().toString()).to.equal(d2)
       expect(endDate.date().toString()).to.equal(d1)
     }
+  })
+
+  it('emit on step 0', () =>{
+    let dateRange
+
+    const vm = new Vue({
+      render (h) {
+        return h(DateRange, {
+          props: {
+            emitChangeOnStep0: true
+          },
+          on: {
+            change: function (range) {
+              dateRange = range
+            }
+          }
+        })
+      }
+    }).$mount()
+
+    const $spans = vm.$el.querySelectorAll(".days span")
+
+    let clickIndex = getUnPassiveDay($spans)
+    $spans[clickIndex].dispatchEvent(getClickEvent())
+    const d1 = $spans[clickIndex].querySelector('.solar').innerText
+    expect(dateRange.startDate).to.equal(dateRange.endDate)
   })
 })

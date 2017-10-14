@@ -172,7 +172,6 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
 # Props
 ## Calendar
 * show-lunar: Show lunar or not. Default is false.
-* ~~day-of-month: Use to init calendar month, any day in the month is ok. Default is today.~~
 * disable-days-before-today: Disable days before today or not.
 * days-disabled-start: Disable days after this day.
 * days-disabled-end: Disable days before this day.
@@ -190,8 +189,10 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
     ...
   ```
 * first-day-of-week: Set the first day of Week. Default is 0 (Sunday).
-* lang: Language
+
 * monthYearFormat: The displaying format for month and year. Default is 'MM - YYYY'.
+
+* lang: Language
 
 | addr. | language |
 | ---- | ---- |
@@ -223,7 +224,6 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
   ```html
   <calendar :sync-date.sync="date"></calendar>
   ```
-* ~~default-date: Init the selected date. Only for Calendar.~~(use syncDate instead)
 * range: The selected date range. e.g.: 
 
   ```javascript
@@ -233,9 +233,8 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
 ## DateRange
 This component is build on ``Calendar``, so it has all the props of ``Calendar`` except ``sync-date``
 Also it has its specific props: 
-
+* emitChangeOnStep0: If set to true, it will emit result after selecting one date. Or it emits result after selecting two dates. Default is false.
 * sync-range: The default date range. Can be used as the “two-way binding” for range (Vue 2.3.0+). e.g.:
   ```html
   <date-range :sync-range.sync="range"></date-range>
   ```
-* ~~defaultRange: Used to init the date range~~

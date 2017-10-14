@@ -203,4 +203,12 @@ exports.commonUnit = function (Comp) {
       done()
     })
   })
+
+  it('test monthYearFormat', () => {
+    const vm = getRenderedVm(Comp, {
+      monthYearFormat: 'YYYY/MM'
+    })
+    const _month = vm.$el.querySelector('.month-year span span').innerText
+    expect(_month).to.match(/\d\/\d/)
+  })
 }

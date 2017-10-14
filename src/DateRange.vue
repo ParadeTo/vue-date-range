@@ -12,7 +12,6 @@
             :showLunar="showLunar"
             :month-year-format="monthYearFormat"
             @change="onChange">
-
     </calendar>
   </div>
 </template>
@@ -80,8 +79,8 @@
       // no date being selected by default
       if (this.$options.propsData.hasOwnProperty('value')) {
         rangeInitial = this.value
-      } else if (this.syncDate) {
-        rangeInitial = this.syncDate
+      } else if (this.syncRange) {
+        rangeInitial = this.syncRange
       } else {
         rangeInitial = {
           startDate: null,
@@ -91,7 +90,6 @@
 
       return {
         rangeData: rangeInitial,
-        date: this.selectedDate || moment(),
         step: 0
       }
     },

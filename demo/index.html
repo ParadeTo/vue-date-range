@@ -269,7 +269,8 @@
 <section>
     <h2>range-date emit change events on each click</h2>
     <div id="range-emit-both-steps" class="calendar-wrapper">
-        <span>{{range.startDate && range.startDate.format('YYYY-MM-DD')}}</span><span v-show="step === 0">~{{range.endDate && range.endDate.format('YYYY-MM-DD')}}</span>
+        <span>{{range.startDate && range.startDate.format('YYYY-MM-DD')}}</span>
+        <span v-show="step === 0">~{{range.endDate && range.endDate.format('YYYY-MM-DD')}}</span>
         <daterange class="calendar"
                    :lang="lang"
                    v-model="range"
