@@ -63,29 +63,47 @@
       value: {
         type: Object
       },
+      emitChangeOnStep0: {
+        type: Boolean,
+        default: false
+      },
       monthYearFormat: {
         default: 'MM - YYYY',
         type: String
       }
     },
     data () {
-      return {
-        rangeData: this.syncRange || {
+      let rangeInitial;
+
+      // Checking propsData rather than the prop detects whether the prop was
+      // specified by the user. This allows the user to pass null, resulting in
+      // no date being selected by default
+      if (this.$options.propsData.hasOwnProperty('value')) {
+        rangeInitial = this.value
+      } else if (this.syncDate) {
+        rangeInitial = this.syncDate
+      } else {
+        rangeInitial = {
           startDate: null,
           endDate: null
-        },
+        }
+      }
+
+      return {
+        rangeData: rangeInitial,
         date: this.selectedDate || moment(),
         step: 0
       }
     },
     watch: {
       syncRange (val) {
-        this.rangeData = val
-        this.step = 0
+        this.updateRangeData(val)
       },
       value (val) {
-        this.rangeData = val
-        this.step = 0
+        this.updateRangeData(val)
+      },
+      step: function(step) {
+        this.$emit('step', step)
       }
     },
     methods: {
@@ -96,6 +114,7 @@
             this.rangeData['startDate'] = dayMoment
             this.rangeData['endDate'] = dayMoment
             this.step = 1
+            this.emitChangeOnStep0 && this.emitChange()
             break
 
           case 1:
@@ -114,6 +133,19 @@
         this.$emit('update:syncRange', {startDate, endDate})
         this.$emit('input', {startDate, endDate})
         this.$emit('change', {startDate, endDate})
+      },
+      setStep: function(step) {
+        this.step = step
+        this.$emit('step', this.step)
+      },
+      updateRangeData: function(rangeData) {
+        this.rangeData = rangeData
+
+        // rangeData.startDate and rangeData.endDate can be null, if this is the
+        // case step must be reset to 0
+        if (this.rangeData.startDate === null || this.rangeData.endDate === null) {
+          this.step = 0;
+        }
       }
     }
   }

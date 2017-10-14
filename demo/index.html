@@ -267,10 +267,72 @@
     </div>
 </section>
 <section>
+    <h2>range-date emit change events on each click</h2>
+    <div id="range-emit-both-steps" class="calendar-wrapper">
+        <span>{{range.startDate && range.startDate.format('YYYY-MM-DD')}}</span><span v-show="step === 0">~{{range.endDate && range.endDate.format('YYYY-MM-DD')}}</span>
+        <daterange class="calendar"
+                   :lang="lang"
+                   v-model="range"
+                   :step="step"
+                   :emit-change-on-step0="true"
+                   ref="range-emit-both-steps"
+                   @step="newStep => step = newStep"></daterange>
+        <button @click.stop.prevent="resetStep">Ok (Reset step)</button>
+        <button @click.stop.prevent="clearRange">Clear Range</button>
+    </div>
+    <div class="code-wrapper">
+        <pre>
+           &lt;div id="range-emit-both-steps" class="calendar-wrapper"&gt;
+                &lt;span&gt;{{range.startDate && range.startDate.format('YYYY-MM-DD')}}&lt;/span&gt;&lt;span v-show="step === 0"&gt;~{{range.endDate && range.endDate.format('YYYY-MM-DD')}}&lt;/span&gt;
+                &lt;daterange class="calendar"
+                           :lang="lang"
+                           v-model="range"
+                           :step="step"
+                           :emit-change-on-step0="true"
+                           ref="range-emit-both-steps"
+                           @step="newStep =&gt; step = newStep"&gt;&lt;/daterange&gt;
+                &lt;button @click.stop.prevent="resetStep"&gt;Ok (Reset step)&lt;/button&gt;
+                &lt;button @click.stop.prevent="clearRange"&gt;Clear Range&lt;/button&gt;
+            &lt;/div&gt;
+
+           new Vue({
+              el: '#range-emit-both-steps',
+              components: {
+                'daterange':daterange.DateRange
+              },
+              data: {
+                lang: 'en',
+                range: {
+                  startDate: null,
+                  endDate: null
+                },
+                step: 0
+              },
+              watch: {
+                range: function(range) {
+                  this.range = range;
+                }
+              },
+              methods: {
+                resetStep: function() {
+                  this.$refs['range-emit-both-steps'].setStep(0)
+                },
+                clearRange: function() {
+                  this.range = {
+                    startDate: null,
+                    endDate: null
+                  }
+                }
+              }
+            });
+        </pre>
+    </div>
+</section>
+<section>
     <h2>custom style</h2>
     <div id="custom-style" class="calendar-wrapper">
         <span>{{range.startDate.format('YYYY-MM-DD')}}</span>~<span>{{range.endDate.format('YYYY-MM-DD')}}</span>
-        <daterange class="calendar" :range="range" :lang="lang" @change="onChange"></daterange>
+        <daterange class="calendar" v-model="range" :lang="lang" @change="onChange"></daterange>
     </div>
     <div class="code-wrapper">
         <pre>
@@ -408,6 +470,37 @@
             }
           },
         }
+    });
+
+    new Vue({
+      el: '#range-emit-both-steps',
+      components: {
+        'daterange':daterange.DateRange
+      },
+      data: {
+        lang: 'en',
+        range: {
+          startDate: null,
+          endDate: null
+        },
+        step: 0
+      },
+      watch: {
+        range: function(range) {
+          this.range = range;
+        }
+      },
+      methods: {
+        resetStep: function() {
+          this.$refs['range-emit-both-steps'].setStep(0)
+        },
+        clearRange: function() {
+          this.range = {
+            startDate: null,
+            endDate: null
+          }
+        }
+      }
     });
 
     new Vue({
