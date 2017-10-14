@@ -148,9 +148,6 @@ exports.commonUnit = function (Comp) {
 
   it('click a day will change selected day', (done) => {
     let vm = getRenderedVm(Comp)
-    const date = moment().date()
-    const dateInCalendar = vm.$el.querySelector(".days span .selected").innerText
-    expect(dateInCalendar.toString()).to.equal(date.toString())
 
     const $spans = vm.$el.querySelectorAll(".days span")
     const clickIndex = getUnPassiveDay($spans)
@@ -181,7 +178,7 @@ exports.commonUnit = function (Comp) {
 
     vm.$nextTick(() => {
       const _month = vm.$el.querySelector(".month-year span span").innerText
-      expect(_month).to.equal(nextMonth)
+      expect(_month).to.match(new RegExp('^' + nextMonth))
       done()
     })
   })
@@ -202,7 +199,7 @@ exports.commonUnit = function (Comp) {
 
     vm.$nextTick(() => {
       const _month = vm.$el.querySelector(".month-year span span").innerText
-      expect(_month).to.equal(prevMonth)
+      expect(_month).to.match(new RegExp('^' + prevMonth))
       done()
     })
   })

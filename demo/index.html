@@ -129,6 +129,48 @@
     </div>
 </section>
 <section>
+    <h2>calendar without default date</h2>
+    <div id="no-default-calendar" class="calendar-wrapper">
+        <calendar class="calendar"
+                  :first-day-of-week="1"
+                  v-model="date"
+                  :lang="lang"></calendar>
+        <button @click.stop.prevent="clearDate">Clear Date</button>
+    </div>
+    <div class="code-wrapper">
+        <pre>
+            &lt;div id="no-default-calendar" class="calendar-wrapper"&gt;
+              &lt;calendar class="calendar"
+                        :first-day-of-week="1"
+                        v-model="date"
+                        :lang="lang"&gt;&lt;/calendar&gt;
+              &lt;button @click.stop.prevent="clearDate"&gt;Clear Date&lt;/button&gt;
+            &lt;/div&gt;
+
+            new Vue({
+              el: '#no-default-calendar',
+              components: {
+                'calendar':daterange.Calendar
+              },
+              data() {
+                return {
+                  lang: 'en',
+                  date: null
+                };
+              },
+              methods: {
+                setDate (offset) {
+                  this.date = moment().add(offset, 'days')
+                },
+                clearDate: function() {
+                  this.date = null;
+                }
+              }
+            });
+        </pre>
+    </div>
+</section>
+<section>
     <h2>calendar with lunar</h2>
     <div id="calendarLunar" class="calendar-wrapper">
         <span>{{date.format('YYYY-MM-DD')}}</span>
@@ -346,6 +388,27 @@
           },
           setDate (offset) {
             this.date = moment().add(offset, 'days')
+          }
+        }
+    });
+
+    new Vue({
+        el: '#no-default-calendar',
+        components: {
+          'calendar':daterange.Calendar
+        },
+        data() {
+          return {
+            lang: 'en',
+            date: null
+          };
+        },
+        methods: {
+          setDate (offset) {
+            this.date = moment().add(offset, 'days')
+          },
+          clearDate: function() {
+            this.date = null;
           }
         }
     });

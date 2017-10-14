@@ -5,9 +5,7 @@
         <i class="month-arrow month-arrow-prev"></i>
       </button>
       <span>
-        <span>{{dayOfMonth.format('MM')}}</span>
-        <span> - </span>
-        <span>{{dayOfMonth.format('YYYY')}}</span>
+        <span>{{dayOfMonth.format(monthYearFormat)}}</span>
       </span>
       <button class="month-button" style="float: right" @click.stop.prevent="changeMonth(1)">
         <i class="month-arrow month-arrow-next"></i>
@@ -82,14 +80,30 @@
       },
       value: {
         type: Object
+      },
+      monthYearFormat: {
+        default: 'MM - YYYY',
+        type: String
       }
     },
     data () {
+      let dateInitial;
+
+      // Use value prop if it's passed in (possibly by v-model), this allows
+      // null to be passed explicitly
+      if (this.$options.propsData.hasOwnProperty('value')) {
+        dateInitial = this.value
+      } else if (this.syncDate) {
+        dateInitial = this.syncDate
+      } else {
+        dateInitial = moment()
+      }
+
       return {
         weekDays: [],
         days: [],
         dayOfMonth: moment(), // Any day of current displaying month
-        date: this.syncDate || moment()
+        date: dateInitial
       }
     },
     watch: {
@@ -131,6 +145,8 @@
       //   })
       // },
       resetDayOfMonth () {
+        // If no date is selected then it's not necessary to update dayOfMonth
+        if (!this.date) return
         if (this.date.format('YYYY-MM') !== this.dayOfMonth.format('YYYY-MM')) {
           let _diff = Number(this.date.diff(this.dayOfMonth, 'months'))
           _diff = _diff <= 0 ? _diff - 1 : _diff
@@ -181,6 +197,7 @@
       },
       isSelected (day) {
         if (!day.dayMoment) return
+        if (!this.date) return
         return day.dayMoment.format('YYYY-MM-DD') === this.date.format('YYYY-MM-DD')
       },
       isInRange (day) {
