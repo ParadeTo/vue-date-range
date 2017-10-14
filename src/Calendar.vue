@@ -91,7 +91,7 @@
         weekDays: [],
         days: [],
         dayOfMonth: moment(), // Any day of current displaying month
-        date: this.syncDate || moment()
+        date: this.syncDate || this.range.endDate || moment()
       }
     },
     watch: {
