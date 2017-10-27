@@ -69,10 +69,8 @@ describe('Test DateRange:',  () => {
     }).$mount()
 
     const $spans = vm.$el.querySelectorAll(".days span")
-
     let clickIndex = getUnPassiveDay($spans)
     $spans[clickIndex].dispatchEvent(getClickEvent())
-    const d1 = $spans[clickIndex].querySelector('.solar').innerText
     expect(dateRange.startDate).to.equal(dateRange.endDate)
   })
 })

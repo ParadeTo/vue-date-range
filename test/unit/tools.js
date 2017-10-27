@@ -37,7 +37,7 @@ function getUnPassiveDay($spans) {
   let isPassive
   do {
     r = Math.floor(Math.random() * $spans.length)
-    isPassive = $spans[r].querySelector('.solar').className.indexOf('passive') > -1
+    isPassive = $spans[r].className.indexOf('passive') > -1
   } while (isPassive)
   return r
 }
