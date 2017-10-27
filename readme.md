@@ -238,3 +238,39 @@ Also it has its specific props:
   ```html
   <date-range :sync-range.sync="range"></date-range>
   ```
+
+
+# custom style
+
+This is a day html structure example:
+
+```html
+<span title="重阳" class="ayou-day-cell selected">
+  <div class="solar">28</div> 
+  <div class="lunar festival">
+     重阳
+  </div>
+</span>
+```
+
+The span tag will has different classes (`selected`, `passive`, `in-range`, `start-day`, `end-day`) according to the dates selected. 
+
+You can set your custom style using these classes. e.g.:
+
+```html
+.ayou-day-cell.start-day {
+  border-bottom-left-radius: 50%;
+  border-top-left-radius: 50%;
+  background-color: transparent;
+}
+.ayou-day-cell.end-day {
+  border-bottom-right-radius: 50%;
+  border-top-right-radius: 50%;
+  background-color: transparent;
+}
+.ayou-day-cell.in-range {
+  background-color: orange;
+}
+```
+
+

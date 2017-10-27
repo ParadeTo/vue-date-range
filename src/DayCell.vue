@@ -1,7 +1,10 @@
 <template>
-  <span class="ayou-day-cell" @click.stop.prevent="handleDayClick()" :title="showLunar && lunarText">
-    <div class="solar" :class="{'selected': isSelected, 'passive': day.isPassive, 'in-range': isInRange}">{{day.dayMoment.date()}}</div>
-    <div class="lunar" :class="{'passive': day.isPassive, 'festival': isFestival}" v-if="showLunar">
+  <span class="ayou-day-cell"
+        :class="{'selected': isSelected, 'passive': day.isPassive, 'in-range': isInRange, 'start-day': isStartDay, 'end-day': isEndDay}"
+        :title="showLunar && lunarText"
+        @click.stop.prevent="handleDayClick()">
+    <div class="solar">{{day.dayMoment.date()}}</div>
+    <div class="lunar" :class="{'festival': isFestival}" v-if="showLunar">
       {{lunarText}}
     </div>
   </span>
@@ -23,6 +26,14 @@
         default: false
       },
       isInRange: {
+        type: Boolean,
+        default: false
+      },
+      isStartDay: {
+        type: Boolean,
+        default: false
+      },
+      isEndDay: {
         type: Boolean,
         default: false
       }
@@ -68,31 +79,33 @@
     display: inline-block;
     font-size: 1rem;
     text-align: center;
+
     &:hover {
       cursor: pointer;
     }
-    div {
-      &.passive {
-        color: @grey;
-      }
+
+    &.passive {
+      color: @grey;
     }
-    .solar {
-      display: inline-block;
-      width: 2.4rem;
-      height: 2.4rem;
-      line-height: 2.4rem;
-      font-size: 1rem;
-      &.selected {
+
+    &.selected {
+      .solar {
         border-radius: 50%;
         background-color: @primary;
         color: #fff;
       }
-      &.in-range {
+    }
+
+    &.in-range {
+      .solar {
         border-radius: 50%;
         background-color: @primary-light;
         color: #fff;
       }
-      &.passive {
+    }
+
+    &.passive {
+      .solar {
         &.in-range {
           opacity: 0.4;
         }
@@ -100,7 +113,19 @@
           opacity: 0.4;
         }
       }
+      .lunar {
+        opacity: 0.4;
+      }
     }
+
+    .solar {
+      display: inline-block;
+      width: 2.4rem;
+      height: 2.4rem;
+      line-height: 2.4rem;
+      font-size: 1rem;
+    }
+
     .lunar {
       font-size: 0.8rem;
       overflow: hidden;
@@ -108,9 +133,6 @@
       white-space: nowrap;
       &.festival {
         color: @secondary;
-        &.passive {
-          opacity: 0.4;
-        }
       }
     }
   }

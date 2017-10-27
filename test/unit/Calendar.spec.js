@@ -28,11 +28,11 @@ describe('Test Calendar:',  () => {
 
     const startDay = start.date()
     const endDay = end.date()
-    let $spans = vm.$el.querySelectorAll(".days span .in-range")
+    let $spans = vm.$el.querySelectorAll(".days .in-range")
 
     expect($spans.length).to.equal(3)
-    expect($spans[0].innerText).to.equal(startDay.toString())
-    expect($spans[$spans.length - 1].innerText).to.equal(endDay.toString())
+    expect($spans[0].querySelector('.solar').innerText).to.equal(startDay.toString())
+    expect($spans[$spans.length - 1].querySelector('.solar').innerText).to.equal(endDay.toString())
 
     vm.range = {
       startDate: moment(`${year}-${formatMonth(month+1)}-16`),
@@ -40,7 +40,7 @@ describe('Test Calendar:',  () => {
     }
 
     vm.$nextTick(() => {
-      $spans = vm.$el.querySelectorAll(".days span .in-range")
+      $spans = vm.$el.querySelectorAll(".days .in-range")
       expect($spans.length).to.equal(2)
       done()
     })
@@ -70,8 +70,7 @@ describe('Test Calendar:',  () => {
       const pos = getDayPositionInCalendar(syncDate, 0)
       for (var i = 0, len = $spans.length; i < len; i++) {
         if (i === pos-1) {
-          var $solar = $spans[i].querySelector(".solar")
-          var hasCls = $solar.className.indexOf('selected') > -1
+          var hasCls = $spans[i].className.indexOf('selected') > -1
           expect(hasCls).to.equal(true)
         }
       }

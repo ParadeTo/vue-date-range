@@ -16,6 +16,8 @@
     </div>
     <div class="days">
       <day-cell key="index"
+                :isStartDay="isStartDay(day)"
+                :isEndDay="isEndDay(day)"
                 :showLunar="showLunar"
                 :isSelected="isSelected(day)"
                 :isInRange="isInRange(day)"
@@ -202,6 +204,18 @@
             day.dayMoment.isBetween(this.range['endDate'], this.range['startDate']) ||
             day.dayMoment.format('YYYY-MM-DD') === this.range['startDate'].format('YYYY-MM-DD') ||
             day.dayMoment.format('YYYY-MM-DD') === this.range['endDate'].format('YYYY-MM-DD')
+        }
+      },
+      isStartDay (day) {
+        const {range} = this
+        if (range && range.startDate) {
+          return day.dayMoment.format('YYYY-MM-DD') === range['startDate'].format('YYYY-MM-DD')
+        }
+      },
+      isEndDay (day) {
+        const {range} = this
+        if (range && range.endDate) {
+          return day.dayMoment.format('YYYY-MM-DD') === range['endDate'].format('YYYY-MM-DD')
         }
       },
       isPassive (dayMoment) {

@@ -85,8 +85,7 @@ exports.commonUnit = function (Comp) {
 
     for (var i = 0, len = $spans.length; i < len; i++) {
       if (i < todayPosition-1) {
-        var $solar = $spans[i].querySelector(".solar")
-        var hasPassiveCls = $solar.className.indexOf('passive') > -1
+        var hasPassiveCls = $spans[i].className.indexOf('passive') > -1
         expect(hasPassiveCls).to.equal(true)
       }
     }
@@ -127,7 +126,7 @@ exports.commonUnit = function (Comp) {
     for (var i = 0, len = $spans.length; i < len; i++) {
       var $solar = $spans[i].querySelector(".solar")
       var date = $solar.innerText
-      var hasPassiveCls = $solar.className.indexOf('passive') > -1
+      var hasPassiveCls = $spans[i].className.indexOf('passive') > -1
 
       if (date % 2 === 1) {
         expect(hasPassiveCls).to.equal(true)
@@ -156,7 +155,9 @@ exports.commonUnit = function (Comp) {
     $spans[clickIndex].dispatchEvent(getClickEvent())
 
     vm.$nextTick(() => {
-      const seletecDay = vm.$el.querySelector(".days span .selected").innerText
+      const seletecDay = vm.$el.querySelector(".days .selected .solar").innerText
+      console.log('---------------')
+      console.log(clickDay, seletecDay)
       expect(clickDay).to.equal(seletecDay)
       done()
     })
