@@ -28,6 +28,10 @@
         type: Boolean,
         default: false
       },
+      dayClassFn: {
+        type: Function,
+        default: null
+      },
       firstDayOfWeek: {
         type: Number,
         default: function () {

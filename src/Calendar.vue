@@ -15,7 +15,7 @@
       <span v-for="day in weekDays">{{day}}</span>
     </div>
     <div class="days">
-      <day-cell key="index"
+      <day-cell :key="dayKey(day)"
                 :isStartDay="isStartDay(day)"
                 :isEndDay="isEndDay(day)"
                 :showLunar="showLunar"
@@ -39,6 +39,10 @@
       DayCell
     },
     props: {
+      dayClassFn: {
+        type: Function,
+        default: null
+      },
       showLunar: {
         type: Boolean,
         default: false
@@ -142,6 +146,9 @@
       //     that.initDays()
       //   })
       // },
+      dayKey(day) {
+        return day.dayMoment.unix()
+      },
       resetDayOfMonth () {
         // If no date is selected then it's not necessary to update dayOfMonth
         if (!this.date) return
