@@ -11,6 +11,7 @@
             :value="null"
             :showLunar="showLunar"
             :month-year-format="monthYearFormat"
+            :dayClassFunc="dayClassFunc"
             @change="onChange">
     </calendar>
   </div>
@@ -27,6 +28,10 @@
       showLunar: {
         type: Boolean,
         default: false
+      },
+      dayClassFunc: {
+        type: Function,
+        default: null
       },
       firstDayOfWeek: {
         type: Number,

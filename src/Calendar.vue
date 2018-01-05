@@ -15,13 +15,14 @@
       <span v-for="day in weekDays">{{day}}</span>
     </div>
     <div class="days">
-      <day-cell key="index"
+      <day-cell :key="dayKey(day)"
                 :isStartDay="isStartDay(day)"
                 :isEndDay="isEndDay(day)"
                 :showLunar="showLunar"
                 :isSelected="isSelected(day)"
                 :isInRange="isInRange(day)"
                 :day="day"
+                :dayClassFunc="dayClassFunc"
                 @dayClick="handleDayClick"
                 v-for="(day, index) in days">
       </day-cell>
@@ -39,6 +40,10 @@
       DayCell
     },
     props: {
+      dayClassFunc: {
+        type: Function,
+        default: null
+      },
       showLunar: {
         type: Boolean,
         default: false
@@ -142,6 +147,9 @@
       //     that.initDays()
       //   })
       // },
+      dayKey(day) {
+        return day.dayMoment.unix()
+      },
       resetDayOfMonth () {
         // If no date is selected then it's not necessary to update dayOfMonth
         if (!this.date) return

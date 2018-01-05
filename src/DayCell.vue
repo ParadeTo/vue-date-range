@@ -1,6 +1,6 @@
 <template>
   <span class="ayou-day-cell"
-        :class="{'selected': isSelected, 'passive': day.isPassive, 'in-range': isInRange, 'start-day': isStartDay, 'end-day': isEndDay}"
+        :class="dayClass"
         :title="showLunar && lunarText"
         @click.stop.prevent="handleDayClick()">
     <div class="solar">{{day.dayMoment.date()}}</div>
@@ -17,6 +17,10 @@
       showLunar: {
         type: Boolean,
         default: false
+      },
+      dayClassFunc: {
+        type: Function,
+        default: null
       },
       day: {
         type: Object
@@ -58,6 +62,24 @@
       }
     },
     computed: {
+      dayClass() {
+        const {isSelected, day, isInRange, isStartDay, isEndDay} = this
+        let cls = [{
+          'selected': isSelected,
+          'passive': day.isPassive,
+          'in-range': isInRange,
+          'start-day': isStartDay,
+          'end-day': isEndDay
+        }]
+
+        if (typeof this.dayClassFunc === 'function') {
+          const _cls = this.dayClassFunc(day.dayMoment)
+          if (Object.prototype.toString.call(_cls) === '[object Array]') {
+            cls = cls.concat(_cls)
+          }
+        }
+        return cls
+      },
       lunarText () {
         return this.lunar && (this.lunar.calendarFestivals || this.lunar.lunarFestivals || this.lunar.Term || this.lunar.IDayCn)
       },
@@ -71,69 +93,69 @@
   }
 </script>
 <style lang="less" rel="stylesheet/less">
-  @import "./_var.less";
+    @import "./_var.less";
 
-  .ayou-day-cell {
-    padding: 2px 0;
-    width: 14.28%;
-    display: inline-block;
-    font-size: 1rem;
-    text-align: center;
+    .ayou-day-cell {
+        padding: 2px 0;
+        width: 14.28%;
+        display: inline-block;
+        font-size: 1rem;
+        text-align: center;
 
-    &:hover {
-      cursor: pointer;
-    }
-
-    &.passive {
-      color: @grey;
-    }
-
-    &.selected {
-      .solar {
-        border-radius: 50%;
-        background-color: @primary;
-        color: #fff;
-      }
-    }
-
-    &.in-range {
-      .solar {
-        border-radius: 50%;
-        background-color: @primary-light;
-        color: #fff;
-      }
-    }
-
-    &.passive {
-      .solar {
-        &.in-range {
-          opacity: 0.4;
+        &:hover {
+            cursor: pointer;
         }
+
+        &.passive {
+            color: @grey;
+        }
+
         &.selected {
-          opacity: 0.4;
+            .solar {
+                border-radius: 50%;
+                background-color: @primary;
+                color: #fff;
+            }
         }
-      }
-      .lunar {
-        opacity: 0.4;
-      }
-    }
 
-    .solar {
-      display: inline-block;
-      width: 2.4rem;
-      height: 2.4rem;
-      line-height: 2.4rem;
-      font-size: 1rem;
-    }
+        &.in-range {
+            .solar {
+                border-radius: 50%;
+                background-color: @primary-light;
+                color: #fff;
+            }
+        }
 
-    .lunar {
-      font-size: 0.8rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      &.festival {
-        color: @secondary;
-      }
+        &.passive {
+            .solar {
+                &.in-range {
+                    opacity: 0.4;
+                }
+                &.selected {
+                    opacity: 0.4;
+                }
+            }
+            .lunar {
+                opacity: 0.4;
+            }
+        }
+
+        .solar {
+            display: inline-block;
+            width: 2.4rem;
+            height: 2.4rem;
+            line-height: 2.4rem;
+            font-size: 1rem;
+        }
+
+        .lunar {
+            font-size: 0.8rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            &.festival {
+                color: @secondary;
+            }
+        }
     }
-  }
 </style>
