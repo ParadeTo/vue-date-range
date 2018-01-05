@@ -156,8 +156,6 @@ exports.commonUnit = function (Comp) {
 
     vm.$nextTick(() => {
       const seletecDay = vm.$el.querySelector(".days .selected .solar").innerText
-      console.log('---------------')
-      console.log(clickDay, seletecDay)
       expect(clickDay).to.equal(seletecDay)
       done()
     })
@@ -211,5 +209,33 @@ exports.commonUnit = function (Comp) {
     })
     const _month = vm.$el.querySelector('.month-year span span').innerText
     expect(_month).to.match(/\d\/\d/)
+  })
+
+  it('my birthday should have birthday class', (done) => {
+    const vm = getRenderedVm(Comp, {
+      dayClassFunc: function (dayMoment) {
+        if (dayMoment.format('MM-DD') === '12-23') {
+          return ['birthday', 'important']
+        }
+      }
+    })
+
+    const clickTimes = 11 - month
+    for (var i = 0; i < clickTimes; i++) {
+      const $btn = vm.$el.querySelectorAll('.month-button')
+      $btn[1].dispatchEvent(getClickEvent())
+    }
+
+    vm.$nextTick(() => {
+      const _month = vm.$el.querySelector(".month-year span span").innerText
+      expect(_month).to.match(new RegExp('^12'))
+
+      const birthday = vm.$el.querySelector(".birthday")
+      birthday.should.not.equal(null)
+
+      const importantDay = vm.$el.querySelector(".important")
+      importantDay.should.not.equal(null)
+      done()
+    })
   })
 }

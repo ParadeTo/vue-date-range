@@ -18,7 +18,7 @@
         type: Boolean,
         default: false
       },
-      dayClassFn: {
+      dayClassFunc: {
         type: Function,
         default: null
       },
@@ -72,8 +72,8 @@
           'end-day': isEndDay
         }]
 
-        if (typeof this.dayClassFn === 'function') {
-          const _cls = this.dayClassFn(day.dayMoment)
+        if (typeof this.dayClassFunc === 'function') {
+          const _cls = this.dayClassFunc(day.dayMoment)
           if (Object.prototype.toString.call(_cls) === '[object Array]') {
             cls = cls.concat(_cls)
           }

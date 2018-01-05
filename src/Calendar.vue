@@ -22,6 +22,7 @@
                 :isSelected="isSelected(day)"
                 :isInRange="isInRange(day)"
                 :day="day"
+                :dayClassFunc="dayClassFunc"
                 @dayClick="handleDayClick"
                 v-for="(day, index) in days">
       </day-cell>
@@ -39,7 +40,7 @@
       DayCell
     },
     props: {
-      dayClassFn: {
+      dayClassFunc: {
         type: Function,
         default: null
       },

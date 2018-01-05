@@ -175,7 +175,7 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
 * disable-days-before-today: Disable days before today or not.
 * days-disabled-start: Disable days after this day.
 * days-disabled-end: Disable days before this day.
-* disabled-func: Use to decide if the day is disabled or not.
+* disabled-func: Used to decide if the day is disabled or not.
   ```javascript
     ...
 	 // set odd days to disabled
@@ -188,6 +188,18 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
      }
     ...
   ```
+* day-class-func: Used to add class to day.
+  ```javascript
+    ...
+      // add 'today, important' class to today 
+      dayClassFunc: function (dayMoment) {
+        if (dayMoment.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')) {
+          return ['today', 'important']
+        }
+      }
+    ...
+  ```
+
 * first-day-of-week: Set the first day of Week. Default is 0 (Sunday).
 
 * monthYearFormat: The displaying format for month and year. Default is 'MM - YYYY'.

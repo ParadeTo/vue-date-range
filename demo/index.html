@@ -6,6 +6,9 @@
       maximum-scale=1.0,minimum-scale=1.0,uses-scalable=no">
     <title>vue-date-range demo</title>
     <style>
+      .today {
+        background-color: orange;
+      }
         body, pre {
             font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;;
             background-color: #f5f5f5;
@@ -100,6 +103,7 @@
                   :days-disabled-start="daysDisabledStart"
                   :days-disabled-end="daysDisabledEnd"
                   :disabled-func="disabledFunc"
+                  :day-class-func="dayClassFunc"
                   :first-day-of-week="1"
                   v-model="date"
                   :lang="lang" @change="onChange"></calendar>
@@ -385,6 +389,12 @@
                 return true
               }
               return false
+            },
+            dayClassFunc: function (dayMoment) {
+              console.log(111)
+              if (dayMoment.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')) {
+                return ['today']
+              }
             },
             lang: 'en',
             date: moment(),

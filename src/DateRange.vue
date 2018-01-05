@@ -11,6 +11,7 @@
             :value="null"
             :showLunar="showLunar"
             :month-year-format="monthYearFormat"
+            :dayClassFunc="dayClassFunc"
             @change="onChange">
     </calendar>
   </div>
@@ -28,7 +29,7 @@
         type: Boolean,
         default: false
       },
-      dayClassFn: {
+      dayClassFunc: {
         type: Function,
         default: null
       },
