@@ -62,6 +62,10 @@
       disableDaysBeforeToday: {
         type: Boolean
       },
+      dayOfMonth: {
+          type: Object,
+          default: null
+      },
       daysDisabledStart: {
         type: Object,
         default: null
@@ -114,7 +118,7 @@
       return {
         weekDays: [],
         days: [],
-        dayOfMonth: moment(), // Any day of current displaying month
+        dayOfMonth: this.dayOfMonth || moment(), // Any day of current displaying month
         date: dateInitial
       }
     },
