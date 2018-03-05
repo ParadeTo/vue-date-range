@@ -118,7 +118,7 @@
       return {
         weekDays: [],
         days: [],
-        dayOfMonth: this.dayOfMonth || moment(), // Any day of current displaying month
+        dayOfMonth: this.dayOfMonth ? this.dayOfMonth.clone() : moment(), // Any day of current displaying month
         date: dateInitial
       }
     },
