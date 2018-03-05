@@ -1,7 +1,7 @@
 {
-  "name": "vue-date-range",
+  "name": "vue-date-range-forked-gzoreslav",
   "version": "2.2.7",
-  "description": "A vue component for choosing dates and date ranges. Uses Moment.js for date operations. Support Chinese lunar.",
+  "description": "Fork: A vue component for choosing dates and date ranges. Uses Moment.js for date operations. Support Chinese lunar.",
   "main": "dist/vue-date-range.min.js",
   "scripts": {
     "test": "karma start --single-run",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ParadeTo/vue-date-range.git"
+    "url": "git+https://github.com/gzoreslav/vue-date-range.git"
   },
   "keywords": [
     "vue",
