@@ -27,6 +27,11 @@
                 v-for="(day, index) in days">
       </day-cell>
     </div>
+    <div class="footer">
+      <span>
+        <span>{{dayOfMonth.format(monthYearFooterFormat)}}</span>
+      </span>
+    </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -86,6 +91,10 @@
       },
       monthYearFormat: {
         default: 'MM - YYYY',
+        type: String
+      },
+      monthYearFooterFormat: {
+        default: 'YYYY',
         type: String
       }
     },

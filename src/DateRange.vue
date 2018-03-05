@@ -11,6 +11,7 @@
             :value="null"
             :showLunar="showLunar"
             :month-year-format="monthYearFormat"
+            :month-year-footer-format="monthYearFooterFormat"
             :dayClassFunc="dayClassFunc"
             @change="onChange">
     </calendar>
@@ -74,6 +75,10 @@
       monthYearFormat: {
         default: 'MM - YYYY',
         type: String
+      },
+      monthYearFooterFormat: {
+          default: 'YYYY',
+          type: String
       }
     },
     data () {
