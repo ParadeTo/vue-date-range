@@ -67,7 +67,9 @@
       },
       dayOfMonth: {
         type: Object,
-        default: moment()
+        default: function() {
+            return moment()
+        }
       },
       value: {
         type: Object

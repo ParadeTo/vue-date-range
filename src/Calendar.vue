@@ -58,7 +58,10 @@
         type: Boolean
       },
       dayOfMonth: {
-        type: Object
+        type: Object,
+        default: function() {
+          return moment()
+        }
       },
       daysDisabledStart: {
         type: Object,
@@ -108,7 +111,7 @@
       return {
         weekDays: [],
         days: [],
-        dayOfMonth: this.dayOfMonth || moment(), // Any day of current displaying month
+        // dayOfMonth: this.dayOfMonth || moment(), // Any day of current displaying month
         date: dateInitial
       }
     },
