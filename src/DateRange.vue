@@ -12,7 +12,6 @@
             :value="null"
             :showLunar="showLunar"
             :month-year-format="monthYearFormat"
-            :month-year-footer-format="monthYearFooterFormat"
             :dayClassFunc="dayClassFunc"
             @change="onChange">
     </calendar>
@@ -44,10 +43,6 @@
       disableDaysBeforeToday: {
         type: Boolean
       },
-      dayOfMonth: {
-        type: Object,
-        default: null
-      },
       daysDisabledStart: {
         type: Object,
         default: null
@@ -70,6 +65,10 @@
       syncRange: {
         type: Object
       },
+      dayOfMonth: {
+        type: Object,
+        default: moment()
+      },
       value: {
         type: Object
       },
@@ -80,10 +79,6 @@
       monthYearFormat: {
         default: 'MM - YYYY',
         type: String
-      },
-      monthYearFooterFormat: {
-          default: 'YYYY',
-          type: String
       }
     },
     data () {

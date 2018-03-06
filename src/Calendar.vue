@@ -27,11 +27,6 @@
                 v-for="(day, index) in days">
       </day-cell>
     </div>
-    <div class="footer">
-      <span>
-        <span>{{dayOfMonth.format(monthYearFooterFormat)}}</span>
-      </span>
-    </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -63,8 +58,7 @@
         type: Boolean
       },
       dayOfMonth: {
-          type: Object,
-          default: null
+        type: Object
       },
       daysDisabledStart: {
         type: Object,
@@ -96,10 +90,6 @@
       monthYearFormat: {
         default: 'MM - YYYY',
         type: String
-      },
-      monthYearFooterFormat: {
-        default: 'YYYY',
-        type: String
       }
     },
     data () {
@@ -118,7 +108,7 @@
       return {
         weekDays: [],
         days: [],
-        dayOfMonth: this.dayOfMonth ? this.dayOfMonth.clone() : moment(), // Any day of current displaying month
+        dayOfMonth: this.dayOfMonth || moment(), // Any day of current displaying month
         date: dateInitial
       }
     },
