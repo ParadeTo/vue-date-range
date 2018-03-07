@@ -4,6 +4,7 @@
             :lang="lang"
             :first-day-of-week="firstDayOfWeek"
             :disable-days-before-today="disableDaysBeforeToday"
+            :day-of-month="dayOfMonth"
             :days-disabled-start="daysDisabledStart"
             :days-disabled-end="daysDisabledEnd"
             :disabled-func="disabledFunc"
@@ -63,6 +64,12 @@
 //      }
       syncRange: {
         type: Object
+      },
+      dayOfMonth: {
+        type: Object,
+        default: function() {
+            return moment()
+        }
       },
       value: {
         type: Object

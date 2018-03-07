@@ -67,6 +67,7 @@
         let cls = [{
           'selected': isSelected,
           'passive': day.isPassive,
+          'current-month': day.isCurrentMonth,
           'in-range': isInRange,
           'start-day': isStartDay,
           'end-day': isEndDay

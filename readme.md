@@ -241,6 +241,10 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
   ```javascript
   range: {startDate: moment(), endDate: moment().add(7, 'days')}
   ```
+* day-of-month: Any day of initial selected month. Default is current date (moment()).
+  ```javascript
+  day-of-month: moment()
+  ```
 
 ## DateRange
 This component is build on ``Calendar``, so it has all the props of ``Calendar`` except ``sync-date``

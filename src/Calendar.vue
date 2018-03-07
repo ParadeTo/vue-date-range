@@ -57,6 +57,12 @@
       disableDaysBeforeToday: {
         type: Boolean
       },
+      dayOfMonth: {
+        type: Object,
+        default: function() {
+          return moment()
+        }
+      },
       daysDisabledStart: {
         type: Object,
         default: null
@@ -105,7 +111,7 @@
       return {
         weekDays: [],
         days: [],
-        dayOfMonth: moment(), // Any day of current displaying month
+        // dayOfMonth: this.dayOfMonth || moment(), // Any day of current displaying month
         date: dateInitial
       }
     },
@@ -184,21 +190,21 @@
         const diff = (Math.abs(firstDayOfWeek - (startOfMonth + 7)) % 7)
         for (let i = diff - 1; i >= 0; i--) {
           const dayMoment = lastMonth.clone().date(lastMonthDayCount - i)
-          this.days.push({dayMoment, isPassive: true})
+          this.days.push({dayMoment, isPassive: true, isCurrentMonth: false})
         }
 
         // Current month's days
         for (let i = 1; i <= dayCount; i++) {
           const dayMoment = this.dayOfMonth.clone().date(i)
           var isPassive = this.isPassive(dayMoment)
-          this.days.push({ dayMoment, isPassive })
+          this.days.push({ dayMoment, isPassive, isCurrentMonth: true })
         }
 
         // Next month's days
         const remainingCells = 42 - this.days.length // 42cells = 7days * 6rows
         for (let i = 1; i <= remainingCells; i++) {
           const dayMoment = nextMonth.clone().date(i)
-          this.days.push({ dayMoment, isPassive: true })
+          this.days.push({ dayMoment, isPassive: true, isCurrentMonth: false })
         }
       },
       isSelected (day) {
