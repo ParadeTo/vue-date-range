@@ -7,7 +7,8 @@
     "test": "karma start --single-run",
     "unit": "karma start --watch",
     "coveralls": "npm run test -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
-    "build": "webpack"
+    "build": "webpack --config build/webpack.build.conf.js",
+    "dev": "webpack-dev-server --config build/webpack.dev.conf.js"
   },
   "repository": {
     "type": "git",
@@ -62,6 +63,9 @@
     "vue-loader": "^11.1.3",
     "vue-style-loader": "^2.0.3",
     "vue-template-compiler": "^2.2.0",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "1.14.0",
+    "webpack-merge": "^0.14.1",
+    "html-webpack-plugin": "^2.8.1"
   }
 }

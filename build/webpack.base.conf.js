@@ -1,15 +1,9 @@
 var webpack = require('webpack');
 var path = require('path');
 
+var projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
-  entry: './src/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'vue-date-range.min.js',
-    library: 'daterange',
-    libraryTarget: 'umd'
-  },
   module: {
     loaders: [
       {
@@ -19,7 +13,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
-        include: [path.join(__dirname, 'src')],
+        include: [path.join(projectRoot, 'src'), path.join(projectRoot, 'dev')],
         exclude: /node_modules/
       },
     ]
@@ -35,11 +29,4 @@ module.exports = {
       })
     ]
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    })
-  ]
 }
