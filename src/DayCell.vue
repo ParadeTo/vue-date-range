@@ -1,11 +1,11 @@
 <template>
-  <span class="ayou-day-cell"
+  <span class="ayou-day-cell cell"
         :class="dayClass"
         :title="showLunar && lunarText"
         @click.stop.prevent="handleDayClick()">
-    <div class="solar">{{day.dayMoment.date()}}</div>
-    <div class="lunar" :class="{'festival': isFestival}" v-if="showLunar">
-      {{lunarText}}
+    <div class="cell-text">
+      <p class="solar">{{day.dayMoment.date()}}</p>
+      <p class="lunar" :class="{'festival': isFestival}" v-if="showLunar">{{lunarText}}</p>
     </div>
   </span>
 </template>
@@ -94,69 +94,44 @@
   }
 </script>
 <style lang="less" rel="stylesheet/less">
-    @import "./_var.less";
+  @import "./_var.less";
 
-    .ayou-day-cell {
-        padding: 2px 0;
-        width: 14.28%;
-        display: inline-block;
-        font-size: 1rem;
-        text-align: center;
+  .ayou-day-cell {
+    width: 14.28%;
+    height: 16.67%;
 
-        &:hover {
-            cursor: pointer;
-        }
-
-        &.passive {
-            color: @grey;
-        }
-
-        &.selected {
-            .solar {
-                border-radius: 50%;
-                background-color: @primary;
-                color: #fff;
-            }
-        }
-
-        &.in-range {
-            .solar {
-                border-radius: 50%;
-                background-color: @primary-light;
-                color: #fff;
-            }
-        }
-
-        &.passive {
-            .solar {
-                &.in-range {
-                    opacity: 0.4;
-                }
-                &.selected {
-                    opacity: 0.4;
-                }
-            }
-            .lunar {
-                opacity: 0.4;
-            }
-        }
-
-        .solar {
-            display: inline-block;
-            width: 2.4rem;
-            height: 2.4rem;
-            line-height: 2.4rem;
-            font-size: 1rem;
-        }
-
-        .lunar {
-            font-size: 0.8rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            &.festival {
-                color: @secondary;
-            }
-        }
+    &:hover {
+      cursor: pointer;
     }
+
+    &.passive {
+      color: @grey;
+    }
+
+    &.in-range {
+      background-color: @primary-light;
+      color: #fff;
+    }
+
+    &.passive {
+      opacity: 0.4;
+    }
+
+    .cell-text {
+      p {
+        line-height: 1.2;
+        margin: 0;
+      }
+      .lunar {
+        font-size: 0.8rem;
+        margin-top: 0.4em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        &.festival {
+          color: @secondary;
+        }
+      }
+    }
+  }
 </style>

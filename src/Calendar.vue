@@ -4,40 +4,51 @@
       <button class="month-button" style="float: left" @click.stop.prevent="changeMonth(-1)">
         <i class="month-arrow month-arrow-prev"></i>
       </button>
-      <span>
-        <span>{{dayOfMonth.format(monthYearFormat)}}</span>
+      <span @click="handleMonthYearClick">
+        <span>{{formatMonthYear}}</span>
       </span>
       <button class="month-button" style="float: right" @click.stop.prevent="changeMonth(1)">
         <i class="month-arrow month-arrow-next"></i>
       </button>
     </div>
-    <div class="week-days">
-      <span v-for="day in weekDays">{{day}}</span>
+    <div class="wrapper" v-if="displayLevel === 1">
+      <div class="week-days">
+        <span v-for="day in weekDays">{{day}}</span>
+      </div>
+      <div class="days">
+        <day-cell :key="dayKey(day)"
+                  :isStartDay="isStartDay(day)"
+                  :isEndDay="isEndDay(day)"
+                  :showLunar="showLunar"
+                  :isSelected="isSelected(day)"
+                  :isInRange="isInRange(day)"
+                  :day="day"
+                  :dayClassFunc="dayClassFunc"
+                  @dayClick="handleDayClick"
+                  v-for="(day, index) in days"/>
+      </div>
     </div>
-    <div class="days">
-      <day-cell :key="dayKey(day)"
-                :isStartDay="isStartDay(day)"
-                :isEndDay="isEndDay(day)"
-                :showLunar="showLunar"
-                :isSelected="isSelected(day)"
-                :isInRange="isInRange(day)"
-                :day="day"
-                :dayClassFunc="dayClassFunc"
-                @dayClick="handleDayClick"
-                v-for="(day, index) in days">
-      </day-cell>
+    <div class="wrapper" v-if="displayLevel === 2">
+      <month-cell
+              v-for="(m, i) in 12"
+              @click="handleMonthClick(i)"
+              :date="date"
+              :monthIndex="i"
+              :lang="lang"/>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import moment from 'moment'
   // import Hammer from 'COMMON/js/hammer.min.js'
+  import moment from 'moment'
   import DayCell from './DayCell.vue'
+  import MonthCell from './MonthCell.vue'
   import locals from './locals.js'
 
   export default {
     components: {
-      DayCell
+      DayCell,
+      MonthCell
     },
     props: {
       dayClassFunc: {
@@ -57,7 +68,7 @@
       disableDaysBeforeToday: {
         type: Boolean
       },
-      dayOfMonth: {
+      dayOfMonthProp: {
         type: Object,
         default: function() {
           return moment()
@@ -109,8 +120,11 @@
       }
 
       return {
+        locals: locals,
+        displayLevel: 1,
         weekDays: [],
         days: [],
+        dayOfMonth: this.dayOfMonthProp,
         // dayOfMonth: this.dayOfMonth || moment(), // Any day of current displaying month
         date: dateInitial
       }
@@ -129,6 +143,17 @@
       value (val) {
         this.date = val
         this.resetDayOfMonth()
+      }
+    },
+    computed: {
+      formatMonthYear () {
+        const { displayLevel, dayOfMonth, monthYearFormat } = this
+        switch (displayLevel) {
+          case 1:
+            return dayOfMonth.format(monthYearFormat)
+          case 2:
+            return dayOfMonth.format('YYYY')
+        }
       }
     },
     created () {
@@ -156,13 +181,22 @@
       dayKey(day) {
         return day.dayMoment.unix()
       },
+      formatter (dayMoment, format="YYYY-MM-DD") {
+        return dayMoment.format(format)
+      },
       resetDayOfMonth () {
+        const {
+          date,
+          dayOfMonth,
+          formatter
+        } = this
         // If no date is selected then it's not necessary to update dayOfMonth
-        if (!this.date) return
-        if (this.date.format('YYYY-MM') !== this.dayOfMonth.format('YYYY-MM')) {
-          let _diff = Number(this.date.diff(this.dayOfMonth, 'months'))
+        if (!date) return
+        if (formatter(date, 'YYYY-MM') !== formatter(dayOfMonth, 'YYYY-MM')) {
+          let _diff = Number(date.diff(dayOfMonth, 'months'))
           _diff = _diff <= 0 ? _diff - 1 : _diff
-          this.dayOfMonth.add(_diff, 'months')
+          dayOfMonth.add(_diff, 'months')
+          this.dayOfMonth = dayOfMonth.clone()
           this.initDays()
         }
       },
@@ -170,7 +204,7 @@
         const dow = this.firstDayOfWeek
         for (let i = dow; i < 7 + dow; i++) {
           let day = i % 7
-          this.weekDays.push(locals.translations[this.lang].days[day])
+          this.weekDays.push(locals[this.lang].days[day])
         }
       },
       initDays () {
@@ -208,32 +242,38 @@
         }
       },
       isSelected (day) {
+        const {
+          date,
+          formatter
+        } = this
         if (!day.dayMoment) return
-        if (!this.date) return
-        return day.dayMoment.format('YYYY-MM-DD') === this.date.format('YYYY-MM-DD')
+        if (!date) return
+        return formatter(day.dayMoment) === formatter(date)
       },
       isInRange (day) {
-        if (this.range && this.range.startDate && this.range.endDate && day && day.dayMoment) {
-          return day.dayMoment.isBetween(this.range['startDate'], this.range['endDate']) ||
-            day.dayMoment.isBetween(this.range['endDate'], this.range['startDate']) ||
-            day.dayMoment.format('YYYY-MM-DD') === this.range['startDate'].format('YYYY-MM-DD') ||
-            day.dayMoment.format('YYYY-MM-DD') === this.range['endDate'].format('YYYY-MM-DD')
+        const { range, formatter } = this
+        const dayMoment = day.dayMoment
+        if (range && range.startDate && range.endDate && day && dayMoment) {
+          return dayMoment.isBetween(range['startDate'], range['endDate']) ||
+            dayMoment.isBetween(range['endDate'], range['startDate']) ||
+            formatter(dayMoment) === formatter(range['startDate']) ||
+            formatter(dayMoment) === formatter(range['endDate'])
         }
       },
       isStartDay (day) {
-        const {range} = this
+        const { range, formatter } = this
         if (range && range.startDate) {
-          return day.dayMoment.format('YYYY-MM-DD') === range['startDate'].format('YYYY-MM-DD')
+          return formatter(day.dayMoment) === formatter(range['startDate'])
         }
       },
       isEndDay (day) {
-        const {range} = this
+        const { range, formatter } = this
         if (range && range.endDate) {
-          return day.dayMoment.format('YYYY-MM-DD') === range['endDate'].format('YYYY-MM-DD')
+          return formatter(day.dayMoment) === formatter(range['endDate'])
         }
       },
       isPassive (dayMoment) {
-        var {disableDaysBeforeToday, daysDisabledStart, daysDisabledEnd, disabledFunc} = this
+        var { disableDaysBeforeToday, daysDisabledStart, daysDisabledEnd, disabledFunc } = this
 
         // use disabledFunc to decide
         if (disabledFunc) {
@@ -269,8 +309,15 @@
         this.$emit('input', day.dayMoment)
         this.$emit('change', day.dayMoment)
       },
+      handleMonthClick (monthIndex) {
+
+      },
+      handleMonthYearClick () {
+        this.displayLevel ++
+      },
       changeMonth (delta) {
         this.dayOfMonth.add(delta, 'months')
+        this.dayOfMonth = this.dayOfMonth.clone()
         this.initDays()
       }
     }
@@ -281,15 +328,19 @@
 
   .ayou-calendar {
     background-color: #fff;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
     .month-year {
       text-align: center;
       font-size: 1.4rem;
-      height: 4rem;
-      line-height: 4rem;
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       .month-button {
         display: inline-block;
         box-sizing: border-box;
-        height: 100%;
         width: 2rem;
         padding: 0;
         margin: 0 0.7rem;
@@ -314,13 +365,25 @@
         }
       }
     }
-    .week-days {
-      span {
-        padding: 10px 0;
-        display: inline-block;
-        font-size: 1rem;
-        width: 14.28%;
-        text-align: center;
+
+    .wrapper {
+      flex: 4;
+      .week-days {
+        height: 15%;
+        span {
+          display: inline-block;
+          width: 14.28%;
+          font-size: 1rem;
+          text-align: center;
+        }
+      }
+      .days {
+        height: 85%;
+        font-size: 0;
+      }
+      .month-cell {
+        width: 25%;
+        height: 33.33%;
       }
     }
   }

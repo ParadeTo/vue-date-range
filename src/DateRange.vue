@@ -4,7 +4,7 @@
             :lang="lang"
             :first-day-of-week="firstDayOfWeek"
             :disable-days-before-today="disableDaysBeforeToday"
-            :day-of-month="dayOfMonth"
+            :day-of-month-prop="dayOfMonthProp"
             :days-disabled-start="daysDisabledStart"
             :days-disabled-end="daysDisabledEnd"
             :disabled-func="disabledFunc"
@@ -65,7 +65,7 @@
       syncRange: {
         type: Object
       },
-      dayOfMonth: {
+      dayOfMonthProp: {
         type: Object,
         default: function() {
             return moment()

@@ -3,7 +3,7 @@
     <h1>Dev Mode</h1>
     <div class="container calendar">
       <h2>Calendar</h2>
-      <calendar />
+      <calendar :syncDate.sync="date" :showLunar="true" />
     </div>
     <div class="container">
       <h2>DateRange</h2>
@@ -13,10 +13,21 @@
 </template>
 <script>
   import {Calendar, DateRange} from '../src'
+  import moment from 'moment'
   export default {
     components: {
       Calendar,
       DateRange
+    },
+    data() {
+      return {
+        date: moment()
+      }
+    },
+    mounted () {
+      setTimeout(() => {
+        this.date = moment().add(1, "month")
+      }, 1000)
     }
   }
 </script>
