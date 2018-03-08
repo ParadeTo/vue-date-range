@@ -26,8 +26,8 @@
         date: moment(),
         dayOfMonth: moment().add(-1, "months"),
         range: {
-          startDate: moment("2018-12-20"),
-          endDate: moment("2018-12-23")
+          startDate: moment("2008-03-08"),
+          endDate: moment("2008-04-08")
         },
         lang: 'zh'
       }

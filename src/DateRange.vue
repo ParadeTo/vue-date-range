@@ -84,7 +84,6 @@
       // specified by the user. This allows the user to pass null, resulting in
       // no date being selected by default
       if (this.$options.propsData.hasOwnProperty('value')) {
-        console.log(this.value)
         rangeInitial = this.value
       } else if (this.syncRange) {
         rangeInitial = this.syncRange
@@ -113,7 +112,6 @@
     },
     methods: {
       onChange (dayMoment) {
-        console.log(222222)
         switch (this.step) {
           case 0:
             this.rangeData = {}

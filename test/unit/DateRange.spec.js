@@ -73,4 +73,35 @@ describe('Test DateRange:',  () => {
     $spans[clickIndex].dispatchEvent(getClickEvent())
     expect(dateRange.startDate).to.equal(dateRange.endDate)
   })
+
+  it("active month and year must be right", (done) => {
+    const startDate = moment("2008-03-08")
+    const endDate = moment("2008-04-08")
+    const vm = new Vue({
+      render (h) {
+        return h(DateRange, {
+          props: {
+            value: {
+              startDate,
+              endDate
+            }
+          }
+        })
+      }
+    }).$mount()
+
+    const $monthYearEle = vm.$el.querySelector(".month-year .text")
+    $monthYearEle.dispatchEvent(getClickEvent())
+    vm.$nextTick(() => {
+      const $monthCells = vm.$el.querySelectorAll(".month-cell")
+      expect($monthCells[2].className.indexOf("selected")).to.be.above(-1)
+      expect($monthCells[3].className.indexOf("selected")).to.be.above(-1)
+      $monthYearEle.dispatchEvent(getClickEvent())
+      vm.$nextTick(() => {
+        const $yearCells = vm.$el.querySelectorAll(".year-cell")
+        expect($yearCells[9].className.indexOf("selected")).to.be.above(-1)
+      })
+      done()
+    })
+  })
 })
