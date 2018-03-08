@@ -3,13 +3,12 @@
     <calendar
             :lang="lang"
             :first-day-of-week="firstDayOfWeek"
-            :disable-days-before-today="disableDaysBeforeToday"
             :day-of-month-prop="dayOfMonthProp"
+            :disable-days-before-today="disableDaysBeforeToday"
             :days-disabled-start="daysDisabledStart"
             :days-disabled-end="daysDisabledEnd"
             :disabled-func="disabledFunc"
             :range="rangeData"
-            :value="null"
             :showLunar="showLunar"
             :month-year-format="monthYearFormat"
             :dayClassFunc="dayClassFunc"
@@ -59,17 +58,12 @@
         type: String,
         default: 'zh'
       },
-//      defaultRange: {
-//        type: Object
-//      }
       syncRange: {
         type: Object
       },
       dayOfMonthProp: {
         type: Object,
-        default: function() {
-            return moment()
-        }
+        default: null
       },
       value: {
         type: Object
@@ -90,6 +84,7 @@
       // specified by the user. This allows the user to pass null, resulting in
       // no date being selected by default
       if (this.$options.propsData.hasOwnProperty('value')) {
+        console.log(this.value)
         rangeInitial = this.value
       } else if (this.syncRange) {
         rangeInitial = this.syncRange
@@ -118,6 +113,7 @@
     },
     methods: {
       onChange (dayMoment) {
+        console.log(222222)
         switch (this.step) {
           case 0:
             this.rangeData = {}

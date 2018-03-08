@@ -11,12 +11,19 @@
 </template>
 <script type="text/ecmascript-6">
   import transformer from './solar_lunar'
+  import { formatter, START_YEAR } from './utils'
 
   export default {
     props: {
       showLunar: {
         type: Boolean,
         default: false
+      },
+      date: {
+        type: Object
+      },
+      range: {
+        type: Object
       },
       dayClassFunc: {
         type: Function,
@@ -25,31 +32,31 @@
       day: {
         type: Object
       },
-      isSelected: {
-        type: Boolean,
-        default: false
+      disableDaysBeforeToday: {
+        type: Boolean
       },
-      isInRange: {
-        type: Boolean,
-        default: false
+      daysDisabledStart: {
+        type: Object,
+        default: null
       },
-      isStartDay: {
-        type: Boolean,
-        default: false
+      daysDisabledEnd: {
+        type: Object,
+        default: null
       },
-      isEndDay: {
-        type: Boolean,
-        default: false
-      }
+      // the day will be passed as argument to it to decide if it is disabled or not
+      disabledFunc: {
+        type: Function,
+        default: null
+      },
     },
     data () {
       return {
-        lunar: this.solar2lunar(this.day)
+        lunar: this.solar2lunar()
       }
     },
     watch: {
-      day (val) {
-        this.lunar = this.solar2lunar(val)
+      day () {
+        this.lunar = this.solar2lunar()
       }
     },
     methods: {
@@ -57,20 +64,52 @@
         if (this.day.isPassive) return
         this.$emit('dayClick', this.day)
       },
-      solar2lunar (day) {
+      solar2lunar () {
+        const { day } = this
         return transformer.solar2lunar(day.dayMoment.year(), day.dayMoment.month() + 1, day.dayMoment.date())
+      },
+      isSelected () {
+        const {
+          date,
+          day
+        } = this
+        if (!day.dayMoment) return
+        if (!date) return
+        return formatter(day.dayMoment) === formatter(date)
+      },
+      isInRange () {
+        const { range, day } = this
+        const dayMoment = day.dayMoment
+        if (range && range.startDate && range.endDate && day && dayMoment) {
+          return dayMoment.isBetween(range['startDate'], range['endDate']) ||
+            dayMoment.isBetween(range['endDate'], range['startDate']) ||
+            formatter(dayMoment) === formatter(range['startDate']) ||
+            formatter(dayMoment) === formatter(range['endDate'])
+        }
+      },
+      isStartDay () {
+        const { range, day } = this
+        if (range && range.startDate) {
+          return formatter(day.dayMoment) === formatter(range['startDate'])
+        }
+      },
+      isEndDay () {
+        const { range, day } = this
+        if (range && range.endDate) {
+          return formatter(day.dayMoment) === formatter(range['endDate'])
+        }
       }
     },
     computed: {
       dayClass() {
-        const {isSelected, day, isInRange, isStartDay, isEndDay} = this
+        const {isSelected, isInRange, day, isStartDay, isEndDay, isPassive} = this
         let cls = [{
-          'selected': isSelected,
+          'selected': isSelected(),
           'passive': day.isPassive,
           'current-month': day.isCurrentMonth,
-          'in-range': isInRange,
-          'start-day': isStartDay,
-          'end-day': isEndDay
+          'in-range': isInRange(),
+          'start-day': isStartDay(),
+          'end-day': isEndDay()
         }]
 
         if (typeof this.dayClassFunc === 'function') {
@@ -99,10 +138,6 @@
   .ayou-day-cell {
     width: 14.28%;
     height: 16.67%;
-
-    &:hover {
-      cursor: pointer;
-    }
 
     &.passive {
       color: @grey;

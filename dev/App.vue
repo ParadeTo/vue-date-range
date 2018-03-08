@@ -3,11 +3,13 @@
     <h1>Dev Mode</h1>
     <div class="container calendar">
       <h2>Calendar</h2>
-      <calendar :syncDate.sync="date" :showLunar="true" />
+      <p>{{date.format("YYYY-MM-DD")}}</p>
+      <calendar class="calendar" :dayOfMonthProp="dayOfMonth" :lang="lang" :syncDate.sync="date" :showLunar="true" />
     </div>
     <div class="container">
       <h2>DateRange</h2>
-      <date-range />
+      <p>{{range.startDate.format("YYYY-MM-DD")}} ~ {{range.endDate.format("YYYY-MM-DD")}}</p>
+      <date-range :emitChangeOnStep0="true" class="calendar" :lang="lang" v-model="range"/>
     </div>
   </div>
 </template>
@@ -21,13 +23,19 @@
     },
     data() {
       return {
-        date: moment()
+        date: moment(),
+        dayOfMonth: moment().add(-1, "months"),
+        range: {
+          startDate: moment("2018-12-20"),
+          endDate: moment("2018-12-23")
+        },
+        lang: 'zh'
       }
     },
     mounted () {
-      setTimeout(() => {
-        this.date = moment().add(1, "month")
-      }, 1000)
+//      setTimeout(() => {
+//        this.date = moment().add(1, "month")
+//      }, 1000)
     }
   }
 </script>
@@ -36,7 +44,10 @@
     text-align: center;
   }
   .container {
-    margin: 0 auto;
+    margin: 2rem auto;
     max-width: 400px;
+    .calendar {
+      border: 1px solid #fff4c2;
+    }
   }
 </style>
