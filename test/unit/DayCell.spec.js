@@ -50,7 +50,6 @@ describe('Test DayCell:',  () => {
     }
 
     Vue.nextTick(function () {
-      console.log('in nextTick')
       expect(vm.isFestival).to.equal(true)
       done()
     })

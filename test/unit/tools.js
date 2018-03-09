@@ -171,7 +171,7 @@ exports.commonUnit = function (Comp) {
 
     let vm = getRenderedVm(Comp)
 
-    let $btn = vm.$el.querySelectorAll('.month-button')
+    let $btn = vm.$el.querySelectorAll('.arrow-button')
 
     $btn[1].dispatchEvent(getClickEvent())
 
@@ -192,7 +192,7 @@ exports.commonUnit = function (Comp) {
 
     const vm = getRenderedVm(Comp)
 
-    const $btn = vm.$el.querySelectorAll('.month-button')
+    const $btn = vm.$el.querySelectorAll('.arrow-button')
 
     $btn[0].dispatchEvent(getClickEvent())
 
@@ -222,7 +222,7 @@ exports.commonUnit = function (Comp) {
 
     const clickTimes = 11 - month
     for (var i = 0; i < clickTimes; i++) {
-      const $btn = vm.$el.querySelectorAll('.month-button')
+      const $btn = vm.$el.querySelectorAll('.arrow-button')
       $btn[1].dispatchEvent(getClickEvent())
     }
 

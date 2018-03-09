@@ -2,3 +2,25 @@
 @primary-light: #48e07d;
 @secondary: #ff470f;
 @grey: #dbdbdb;
+
+.cell {
+  display: inline-block;
+  font-size: 1rem;
+  text-align: center;
+  position: relative;
+  &:hover {
+    cursor: pointer;
+  }
+  .cell-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
+}
+
+.selected {
+  background-color: @primary;
+  color: #fff;
+}

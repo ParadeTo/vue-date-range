@@ -2,14 +2,14 @@
   <div class="ayou-date-range">
     <calendar
             :lang="lang"
+            :open-transition="openTransition"
             :first-day-of-week="firstDayOfWeek"
+            :day-of-month-prop="dayOfMonthProp"
             :disable-days-before-today="disableDaysBeforeToday"
-            :day-of-month="dayOfMonth"
             :days-disabled-start="daysDisabledStart"
             :days-disabled-end="daysDisabledEnd"
             :disabled-func="disabledFunc"
             :range="rangeData"
-            :value="null"
             :showLunar="showLunar"
             :month-year-format="monthYearFormat"
             :dayClassFunc="dayClassFunc"
@@ -26,6 +26,10 @@
       Calendar
     },
     props: {
+      openTransition: {
+        type: Boolean,
+        default: true
+      },
       showLunar: {
         type: Boolean,
         default: false
@@ -59,17 +63,12 @@
         type: String,
         default: 'zh'
       },
-//      defaultRange: {
-//        type: Object
-//      }
       syncRange: {
         type: Object
       },
-      dayOfMonth: {
+      dayOfMonthProp: {
         type: Object,
-        default: function() {
-            return moment()
-        }
+        default: null
       },
       value: {
         type: Object
