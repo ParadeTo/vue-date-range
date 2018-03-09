@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-  import {Calendar, DateRange} from '../src'
+  import {Calendar, DateRange} from '../dist/vue-date-range.min'
   import moment from 'moment'
   export default {
     components: {
