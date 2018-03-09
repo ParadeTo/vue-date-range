@@ -4,7 +4,7 @@
 
 A vue component for choosing dates and date ranges. Uses Moment.js for date operations. Support Chinese lunar.
 
-![vue-date-range-demo.png](http://om464nmvr.bkt.clouddn.com/vue-date-range-demo.png)
+![vue-date-range-demo.gif](https://raw.githubusercontent.com/ParadeTo/vue-date-range/master/img/demo.gif)
 
 [Live Demo](http://paradeto.com/vue-date-range/)
 
@@ -286,5 +286,10 @@ You can set your custom style using these classes. e.g.:
   background-color: orange;
 }
 ```
+
+# Thanks 
+
+* [迅捷屏幕录像工具](http://www.shipinzhuanhuan.cn/xunjie_video_recorder/index.html)
+* [EZGIF.COM](https://ezgif.com/)
 
 

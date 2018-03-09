@@ -9,7 +9,7 @@
     <div class="container">
       <h2>DateRange</h2>
       <p>{{range.startDate.format("YYYY-MM-DD")}} ~ {{range.endDate.format("YYYY-MM-DD")}}</p>
-      <date-range :openTransition="false" :emitChangeOnStep0="true" class="calendar" :lang="lang" v-model="range"/>
+      <date-range :openTransition="true" lang="zh" showLunar="true" :emitChangeOnStep0="true" class="calendar" :lang="lang" v-model="range"/>
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@
         dayOfMonth: moment().add(-1, "months"),
         range: {
           startDate: moment("2008-03-08"),
-          endDate: moment("2008-04-08")
+          endDate: moment("2008-03-10")
         },
         lang: 'zh'
       }
@@ -47,7 +47,7 @@
     margin: 2rem auto;
     max-width: 400px;
     .calendar {
-      border: 1px solid #fff4c2;
+      border: 1px solid #aaa;
     }
   }
 </style>
