@@ -171,6 +171,7 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
 
 # Props
 ## Calendar
+* open-transition: Open transition or not. Default is true.
 * show-lunar: Show lunar or not. Default is false.
 * disable-days-before-today: Disable days before today or not.
 * days-disabled-start: Disable days after this day.
@@ -202,7 +203,7 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
 
 * first-day-of-week: Set the first day of Week. Default is 0 (Sunday).
 
-* monthYearFormat: The displaying format for month and year. Default is 'MM - YYYY'.
+* month-year-format: The displaying format for month and year. Default is 'MM - YYYY'.
 
 * lang: Language
 
@@ -241,10 +242,7 @@ We can also use [`v-model` modifier](https://vuejs.org/v2/guide/components.html#
   ```javascript
   range: {startDate: moment(), endDate: moment().add(7, 'days')}
   ```
-* day-of-month: Any day of initial selected month. Default is current date (moment()).
-  ```javascript
-  day-of-month: moment()
-  ```
+* day-of-month-prop: Any day of initial selected month. If not set, it will equal to `value` or `syncDate` or`range.startDate` or `moment()`.
 
 ## DateRange
 This component is build on ``Calendar``, so it has all the props of ``Calendar`` except ``sync-date``

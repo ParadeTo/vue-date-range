@@ -11,39 +11,32 @@
         <i class="arrow next"></i>
       </button>
     </div>
-    <transition name="fade" mode="out-in">
+    <transition :name="openTransition ? 'fade' : ''"  mode="out-in">
       <div class="wrapper" v-if="displayLevel === 1" key="day">
-        <div class="week-days">
-          <span v-for="day in weekDays">{{day}}</span>
-        </div>
-        <div class="days">
-          <day-cell :key="dayKey(day)"
-                    :disable-days-before-today="disableDaysBeforeToday"
-                    :days-disabled-start="daysDisabledStart"
-                    :days-disabled-end="daysDisabledEnd"
-                    :disabled-func="disabledFunc"
-                    :show-lunar="showLunar"
-                    :day="day"
-                    :date="date"
-                    :range="range"
-                    :day-class-func="dayClassFunc"
-                    @dayClick="handleDayClick"
-                    v-for="(day, index) in dayList"/>
-        </div>
+        <page-transition :openTransition="openTransition" :moveDirection="moveDirection" :toggleShow="toggleShow">
+          <div class="week-days">
+            <span v-for="day in weekDays">{{day}}</span>
+          </div>
+          <div class="days" >
+            <day-cell
+                      :key="dayKey(day)"
+                      :disable-days-before-today="disableDaysBeforeToday"
+                      :days-disabled-start="daysDisabledStart"
+                      :days-disabled-end="daysDisabledEnd"
+                      :disabled-func="disabledFunc"
+                      :show-lunar="showLunar"
+                      :day="day"
+                      :date="date"
+                      :range="range"
+                      :day-class-func="dayClassFunc"
+                      @dayClick="handleDayClick"
+                      v-for="(day, index) in dayList"/>
+          </div>
+        </page-transition>
       </div>
       <div class="wrapper" v-if="displayLevel === 2" key="month">
-        <!--<transition-group name="list" class="wrapper" v-if="displayLevel === 2" key="month" tag="div">-->
-          <!--<month-cell-->
-            <!--v-for="m in monthList"-->
-            <!--@click.native="handleMonthClick(m)"-->
-            <!--:key="dayKey(m)"-->
-            <!--:date="date"-->
-            <!--:range="range"-->
-            <!--:moment="m"-->
-            <!--:lang="lang"/>-->
-        <!--</transition-group>-->
-        <transition :name="moveDirection">
-          <div v-if="showMonth" style="height: 100%;" key="show">
+        <page-transition :openTransition="openTransition" :moveDirection="moveDirection" :toggleShow="toggleShow">
+          <div style="height: 100%;">
             <month-cell
                     v-for="m in monthList"
                     @click.native="handleMonthClick(m)"
@@ -53,27 +46,21 @@
                     :moment="m"
                     :lang="lang"/>
           </div>
-          <div v-else style="height: 100%;" key="noshow">
-            <month-cell
-                    v-for="m in monthList"
-                    @click.native="handleMonthClick(m)"
-                    :key="dayKey(m)"
-                    :date="date"
-                    :range="range"
-                    :moment="m"
-                    :lang="lang"/>
-          </div>
-        </transition>
+        </page-transition>
       </div>
       <div class="wrapper" v-if="displayLevel === 3" key="year">
-        <year-cell
-                v-for="y in yearList"
-                @click.native="handleYearClick(y)"
-                :key="y"
-                :year="y"
-                :date="date"
-                :range="range"
-        />
+        <page-transition :openTransition="openTransition" :moveDirection="moveDirection" :toggleShow="toggleShow">
+          <div style="height: 100%;">
+            <year-cell
+                    v-for="y in yearList"
+                    @click.native="handleYearClick(y)"
+                    :key="y"
+                    :year="y"
+                    :date="date"
+                    :range="range"
+            />
+          </div>
+        </page-transition>
       </div>
     </transition>
   </div>
@@ -84,6 +71,7 @@
   import DayCell from './DayCell.vue'
   import MonthCell from './MonthCell.vue'
   import YearCell from './YearCell.vue'
+  import PageTransition from './PageTransition.vue'
   import locals from './locals.js'
   import { formatter, START_YEAR } from './utils'
 
@@ -91,9 +79,14 @@
     components: {
       DayCell,
       MonthCell,
+      PageTransition,
       YearCell
     },
     props: {
+      openTransition: {
+        type: Boolean,
+        default: true
+      },
       dayClassFunc: {
         type: Function,
         default: null
@@ -168,7 +161,7 @@
         weekDays: [],
         dayOfMonth: (this.dayOfMonthProp && this.dayOfMonthProp.clone()) || dateInitial.clone(),
         date: dateInitial.clone(),
-        showMonth: true,
+        toggleShow: true,
         moveDirection: "move-right"
       }
     },
@@ -359,7 +352,7 @@
         this.displayLevel ++
       },
       changeMonthYear (delta) {
-        this.showMonth = !this.showMonth
+        this.toggleShow = !this.toggleShow
         if (delta > 0) {
           this.moveDirection = "move-left"
         } else {
@@ -392,63 +385,9 @@
   .fade-enter-active, .fade-leave-active {
     transition: transform .3s;
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  /*.fade-enter,*/
+  .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     transform: scale(0);
-  }
-
-  .move-right-enter-active, .move-right-leave-active {
-    transition: transform .3s;
-  }
-  .move-right-enter-active {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .move-right-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    transform: translateX(100%);
-  }
-  .move-right-enter {
-    transform: translateX(-100%);
-  }
-
-  .move-left-enter-active, .move-left-leave-active {
-    transition: transform .3s;
-  }
-  .move-left-enter-active {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .move-left-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    transform: translateX(-100%);
-  }
-  .move-left-enter {
-    transform: translateX(100%);
-  }
-
-  .list-move {
-    transition: transform .3s;
-  }
-  .list-enter, .list-leave-to
-    /* .list-complete-leave-active for below version 2.1.8 */ {
-    /*opacity: 0;*/
-  }
-  .list-leave-to {
-    transform: translateX(400%);
-  }
-  .list-enter {
-    /*position: absolute;*/
-    transform: translateX(-400%) translateY(-300%);
-  }
-  .list-enter-active, .list-leave-active {
-    transition: all .3s;
-    /*position: absolute;*/
-  }
-  .list-enter-to {
-    transform: translateX(0) translateY(-300%);
-    position: absolute;
   }
 
   .ayou-calendar {

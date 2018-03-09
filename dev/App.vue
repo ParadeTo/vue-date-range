@@ -4,12 +4,12 @@
     <div class="container calendar">
       <h2>Calendar</h2>
       <p>{{date.format("YYYY-MM-DD")}}</p>
-      <calendar class="calendar" :dayOfMonthProp="dayOfMonth" :lang="lang" :syncDate.sync="date" :showLunar="true" />
+      <calendar class="calendar" :openTransition="true" :dayOfMonthProp="dayOfMonth" :lang="lang" :syncDate.sync="date" :showLunar="true" />
     </div>
     <div class="container">
       <h2>DateRange</h2>
       <p>{{range.startDate.format("YYYY-MM-DD")}} ~ {{range.endDate.format("YYYY-MM-DD")}}</p>
-      <date-range :emitChangeOnStep0="true" class="calendar" :lang="lang" v-model="range"/>
+      <date-range :openTransition="false" :emitChangeOnStep0="true" class="calendar" :lang="lang" v-model="range"/>
     </div>
   </div>
 </template>

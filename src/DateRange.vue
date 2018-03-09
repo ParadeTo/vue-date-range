@@ -2,6 +2,7 @@
   <div class="ayou-date-range">
     <calendar
             :lang="lang"
+            :open-transition="openTransition"
             :first-day-of-week="firstDayOfWeek"
             :day-of-month-prop="dayOfMonthProp"
             :disable-days-before-today="disableDaysBeforeToday"
@@ -25,6 +26,10 @@
       Calendar
     },
     props: {
+      openTransition: {
+        type: Boolean,
+        default: true
+      },
       showLunar: {
         type: Boolean,
         default: false
