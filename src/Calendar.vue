@@ -11,45 +11,71 @@
         <i class="arrow next"></i>
       </button>
     </div>
-    <div class="wrapper" v-if="displayLevel === 1">
-      <div class="week-days">
-        <span v-for="day in weekDays">{{day}}</span>
+    <transition name="fade" mode="out-in">
+      <div class="wrapper" v-if="displayLevel === 1" key="day">
+        <div class="week-days">
+          <span v-for="day in weekDays">{{day}}</span>
+        </div>
+        <div class="days">
+          <day-cell :key="dayKey(day)"
+                    :disable-days-before-today="disableDaysBeforeToday"
+                    :days-disabled-start="daysDisabledStart"
+                    :days-disabled-end="daysDisabledEnd"
+                    :disabled-func="disabledFunc"
+                    :show-lunar="showLunar"
+                    :day="day"
+                    :date="date"
+                    :range="range"
+                    :day-class-func="dayClassFunc"
+                    @dayClick="handleDayClick"
+                    v-for="(day, index) in dayList"/>
+        </div>
       </div>
-      <div class="days">
-        <day-cell :key="dayKey(day)"
-                  :disable-days-before-today="disableDaysBeforeToday"
-                  :days-disabled-start="daysDisabledStart"
-                  :days-disabled-end="daysDisabledEnd"
-                  :disabled-func="disabledFunc"
-                  :show-lunar="showLunar"
-                  :day="day"
-                  :date="date"
-                  :range="range"
-                  :day-class-func="dayClassFunc"
-                  @dayClick="handleDayClick"
-                  v-for="(day, index) in dayList"/>
+      <div class="wrapper" v-if="displayLevel === 2" key="month">
+        <!--<transition-group name="list" class="wrapper" v-if="displayLevel === 2" key="month" tag="div">-->
+          <!--<month-cell-->
+            <!--v-for="m in monthList"-->
+            <!--@click.native="handleMonthClick(m)"-->
+            <!--:key="dayKey(m)"-->
+            <!--:date="date"-->
+            <!--:range="range"-->
+            <!--:moment="m"-->
+            <!--:lang="lang"/>-->
+        <!--</transition-group>-->
+        <transition :name="moveDirection">
+          <div v-if="showMonth" style="height: 100%;" key="show">
+            <month-cell
+                    v-for="m in monthList"
+                    @click.native="handleMonthClick(m)"
+                    :key="dayKey(m)"
+                    :date="date"
+                    :range="range"
+                    :moment="m"
+                    :lang="lang"/>
+          </div>
+          <div v-else style="height: 100%;" key="noshow">
+            <month-cell
+                    v-for="m in monthList"
+                    @click.native="handleMonthClick(m)"
+                    :key="dayKey(m)"
+                    :date="date"
+                    :range="range"
+                    :moment="m"
+                    :lang="lang"/>
+          </div>
+        </transition>
       </div>
-    </div>
-    <div class="wrapper" v-if="displayLevel === 2">
-      <month-cell
-              v-for="m in monthList"
-              @click.native="handleMonthClick(m)"
-              :key="dayKey(m)"
-              :date="date"
-              :range="range"
-              :moment="m"
-              :lang="lang"/>
-    </div>
-    <div class="wrapper" v-if="displayLevel === 3">
-      <year-cell
-              v-for="y in yearList"
-              @click.native="handleYearClick(y)"
-              :key="y"
-              :year="y"
-              :date="date"
-              :range="range"
-            />
-    </div>
+      <div class="wrapper" v-if="displayLevel === 3" key="year">
+        <year-cell
+                v-for="y in yearList"
+                @click.native="handleYearClick(y)"
+                :key="y"
+                :year="y"
+                :date="date"
+                :range="range"
+        />
+      </div>
+    </transition>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -141,7 +167,9 @@
         displayLevel: 1,
         weekDays: [],
         dayOfMonth: (this.dayOfMonthProp && this.dayOfMonthProp.clone()) || dateInitial.clone(),
-        date: dateInitial.clone()
+        date: dateInitial.clone(),
+        showMonth: true,
+        moveDirection: "move-right"
       }
     },
     watch: {
@@ -331,6 +359,13 @@
         this.displayLevel ++
       },
       changeMonthYear (delta) {
+        this.showMonth = !this.showMonth
+        if (delta > 0) {
+          this.moveDirection = "move-left"
+        } else {
+          this.moveDirection = "move-right"
+        }
+
         const { displayLevel } = this
         switch (displayLevel) {
           case 1:
@@ -353,6 +388,68 @@
 </script>
 <style lang="less" rel="stylesheet/less">
   @import "_var";
+
+  .fade-enter-active, .fade-leave-active {
+    transition: transform .3s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    transform: scale(0);
+  }
+
+  .move-right-enter-active, .move-right-leave-active {
+    transition: transform .3s;
+  }
+  .move-right-enter-active {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .move-right-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    transform: translateX(100%);
+  }
+  .move-right-enter {
+    transform: translateX(-100%);
+  }
+
+  .move-left-enter-active, .move-left-leave-active {
+    transition: transform .3s;
+  }
+  .move-left-enter-active {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .move-left-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    transform: translateX(-100%);
+  }
+  .move-left-enter {
+    transform: translateX(100%);
+  }
+
+  .list-move {
+    transition: transform .3s;
+  }
+  .list-enter, .list-leave-to
+    /* .list-complete-leave-active for below version 2.1.8 */ {
+    /*opacity: 0;*/
+  }
+  .list-leave-to {
+    transform: translateX(400%);
+  }
+  .list-enter {
+    /*position: absolute;*/
+    transform: translateX(-400%) translateY(-300%);
+  }
+  .list-enter-active, .list-leave-active {
+    transition: all .3s;
+    /*position: absolute;*/
+  }
+  .list-enter-to {
+    transform: translateX(0) translateY(-300%);
+    position: absolute;
+  }
 
   .ayou-calendar {
     background-color: #fff;
@@ -397,8 +494,10 @@
     .wrapper {
       flex: 4;
       font-size: 0;
+      position: relative;
+      overflow: hidden;
       .week-days {
-        height: 15%;
+        height: 10%;
         span {
           display: inline-block;
           width: 14.28%;
@@ -407,7 +506,7 @@
         }
       }
       .days {
-        height: 85%;
+        height: 90%;
         font-size: 0;
       }
     }

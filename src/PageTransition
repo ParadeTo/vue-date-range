@@ -1,0 +1,32 @@
+<template>
+  <transition :name="moveDirection">
+    <div v-if="showMonth" style="height: 100%;" key="show">
+      <month-cell
+              v-for="m in monthList"
+              @click.native="handleMonthClick(m)"
+              :key="dayKey(m)"
+              :date="date"
+              :range="range"
+              :moment="m"
+              :lang="lang"/>
+    </div>
+    <div v-else style="height: 100%;" key="noshow">
+      <month-cell
+              v-for="m in monthList"
+              @click.native="handleMonthClick(m)"
+              :key="dayKey(m)"
+              :date="date"
+              :range="range"
+              :moment="m"
+              :lang="lang"/>
+    </div>
+  </transition>
+</template>
+<script>
+  export default {
+    props: ["toggleShow"]
+  }
+</script>
+<style lang="less" rel="stylesheet/less">
+
+</style>
