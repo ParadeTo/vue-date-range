@@ -9,12 +9,12 @@
     <div class="container">
       <h2>DateRange</h2>
       <p>{{range.startDate.format("YYYY-MM-DD")}} ~ {{range.endDate.format("YYYY-MM-DD")}}</p>
-      <date-range :openTransition="true" lang="zh" showLunar="true" :emitChangeOnStep0="true" class="calendar" :lang="lang" v-model="range"/>
+      <date-range :openTransition="true" lang="zh" :showLunar="true" :emitChangeOnStep0="true" class="calendar" :lang="lang" v-model="range"/>
     </div>
   </div>
 </template>
 <script>
-  import {Calendar, DateRange} from '../dist/vue-date-range.min'
+  import {Calendar, DateRange} from '../src'
   import moment from 'moment'
   export default {
     components: {

@@ -1,23 +1,23 @@
 <template>
-  <div class="ayou-calendar" ref="calendar">
-    <div class="month-year">
-      <button class="arrow-button" style="float: left" @click.stop.prevent="changeMonthYear(-1)">
-        <i class="arrow prev"></i>
+  <div class="v-date-calendar" ref="calendar">
+    <div class="v-date-month-year">
+      <button class="v-date-arrow-button" style="float: left" @click.stop.prevent="changeMonthYear(-1)">
+        <i class="v-date-arrow v-date-prev"></i>
       </button>
-      <span class="text" @click="handleMonthYearClick">
+      <span class="v-date-text" @click="handleMonthYearClick">
         <span>{{formatMonthYear}}</span>
       </span>
-      <button class="arrow-button" style="float: right" @click.stop.prevent="changeMonthYear(1)">
-        <i class="arrow next"></i>
+      <button class="v-date-arrow-button" style="float: right" @click.stop.prevent="changeMonthYear(1)">
+        <i class="v-date-arrow v-date-prev"></i>
       </button>
     </div>
     <transition :name="openTransition ? 'fade' : ''"  mode="out-in">
-      <div class="wrapper" v-if="displayLevel === 1" key="day">
+      <div class="v-date-wrapper" v-if="displayLevel === 1" key="day">
         <page-transition :openTransition="openTransition" :moveDirection="moveDirection" :toggleShow="toggleShow">
-          <div class="week-days">
-            <span v-for="day in weekDays">{{day}}</span>
+          <div class="v-date-week-days">
+            <span v-for="(day, index) in weekDays" :key="index">{{day}}</span>
           </div>
-          <div class="days" >
+          <div class="v-date-days" >
             <day-cell
                       :key="dayKey(day)"
                       :disable-days-before-today="disableDaysBeforeToday"
@@ -30,11 +30,11 @@
                       :range="range"
                       :day-class-func="dayClassFunc"
                       @dayClick="handleDayClick"
-                      v-for="(day, index) in dayList"/>
+                      v-for="day in dayList"/>
           </div>
         </page-transition>
       </div>
-      <div class="wrapper" v-if="displayLevel === 2" key="month">
+      <div class="v-date-wrapper" v-if="displayLevel === 2" key="month">
         <page-transition :openTransition="openTransition" :moveDirection="moveDirection" :toggleShow="toggleShow">
           <div style="height: 100%;">
             <month-cell
@@ -48,7 +48,7 @@
           </div>
         </page-transition>
       </div>
-      <div class="wrapper" v-if="displayLevel === 3" key="year">
+      <div class="v-date-wrapper" v-if="displayLevel === 3" key="year">
         <page-transition :openTransition="openTransition" :moveDirection="moveDirection" :toggleShow="toggleShow">
           <div style="height: 100%;">
             <year-cell
@@ -390,19 +390,19 @@
     transform: scale(0);
   }
 
-  .ayou-calendar {
+  .v-date-calendar {
     background-color: #fff;
     height: 500px;
     display: flex;
     flex-direction: column;
-    .month-year {
+    .v-date-month-year {
       text-align: center;
       font-size: 1.4rem;
       flex: 1;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .arrow-button {
+      .v-date-arrow-button {
         display: inline-block;
         box-sizing: border-box;
         width: 2rem;
@@ -412,30 +412,30 @@
         outline: none;
         background-color: #fff;
       }
-      .arrow {
+      .v-date-arrow {
         display: inline-block;
         height: 100%;
         line-height: 100%;
         border-top: 1px solid @primary;
         width: 10px;
         height: 10px;
-        &.prev {
+        &.v-date-prev {
           border-left: 1px solid @primary;
           transform: rotate(-45deg);
         }
-        &.next {
+        &.v-date-next {
           border-right: 1px solid @primary;
           transform: rotate(45deg);
         }
       }
     }
 
-    .wrapper {
+    .v-date-wrapper {
       flex: 4;
       font-size: 0;
       position: relative;
       overflow: hidden;
-      .week-days {
+      .v-date-week-days {
         height: 10%;
         span {
           display: inline-block;
@@ -444,7 +444,7 @@
           text-align: center;
         }
       }
-      .days {
+      .v-date-days {
         height: 90%;
         font-size: 0;
       }

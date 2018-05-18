@@ -11,7 +11,7 @@ describe('Test DayCell:',  () => {
       }
     })
 
-    const ele = vm.$el.getElementsByClassName("lunar")
+    const ele = vm.$el.getElementsByClassName('v-date-lunar')
     expect(ele.length).to.equal(0)
   })
 

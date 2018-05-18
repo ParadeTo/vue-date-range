@@ -1,6 +1,6 @@
 <template>
-  <span class="cell year-cell" :class="{'selected': isSelected}">
-    <span class="cell-text">
+  <span class="v-date-cell v-date-year-cell" :class="{'v-date-selected': isSelected}">
+    <span class="v-date-cell-text">
       {{ year }}
     </span>
   </span>
@@ -28,7 +28,7 @@
 </script>
 <style lang="less" rel="stylesheet/less">
   @import "./_var.less";
-  .year-cell {
+  .v-date-year-cell {
     width: 25%;
     height: 33.33%;
   }

@@ -30,11 +30,11 @@ describe('Test Calendar:',  () => {
 
     const startDay = start.date()
     const endDay = end.date()
-    let $spans = vm.$el.querySelectorAll(".days .in-range")
+    let $spans = vm.$el.querySelectorAll(".v-date-days .v-date-in-range")
 
     expect($spans.length).to.equal(3)
-    expect($spans[0].querySelector('.solar').innerText).to.equal(startDay.toString())
-    expect($spans[$spans.length - 1].querySelector('.solar').innerText).to.equal(endDay.toString())
+    expect($spans[0].querySelector('.v-date-solar').innerText).to.equal(startDay.toString())
+    expect($spans[$spans.length - 1].querySelector('.v-date-solar').innerText).to.equal(endDay.toString())
 
     vm.range = {
       startDate: moment(`${YEAR}-${formatMonth(MONTH+1)}-16`),
@@ -42,7 +42,7 @@ describe('Test Calendar:',  () => {
     }
 
     vm.$nextTick(() => {
-      $spans = vm.$el.querySelectorAll(".days .in-range")
+      $spans = vm.$el.querySelectorAll(".v-date-days .v-date-in-range")
       expect($spans.length).to.equal(2)
       done()
     })
@@ -65,14 +65,14 @@ describe('Test Calendar:',  () => {
     vm.syncDate = syncDate
 
     vm.$nextTick(() => {
-      const _month = vm.$el.querySelector(".month-year span span").innerText
+      const _month = vm.$el.querySelector(".v-date-month-year span span").innerText
       expect(_month).to.match(new RegExp('^' + nextMonth))
 
-      const $spans = vm.$el.querySelectorAll(".days span")
+      const $spans = vm.$el.querySelectorAll(".v-date-days span")
       const pos = getDayPositionInCalendar(syncDate, 0)
       for (var i = 0, len = $spans.length; i < len; i++) {
         if (i === pos-1) {
-          var hasCls = $spans[i].className.indexOf('selected') > -1
+          var hasCls = $spans[i].className.indexOf('v-date-selected') > -1
           expect(hasCls).to.equal(true)
         }
       }
@@ -86,11 +86,11 @@ describe('Test Calendar:',  () => {
       openTransition: false
     })
     console.log(vm.$refs.monthCell)
-    const $monthYearEle = vm.$el.querySelector(".month-year .text")
+    const $monthYearEle = vm.$el.querySelector('.v-date-month-year .v-date-text')
     $monthYearEle.dispatchEvent(getClickEvent())
     vm.$nextTick(() => {
       // month-cell === 12
-      const $monthCells = vm.$el.querySelectorAll(".month-cell")
+      const $monthCells = vm.$el.querySelectorAll('.v-date-month-cell')
       expect(vm.monthList.length).to.equal(12)
       done()
 

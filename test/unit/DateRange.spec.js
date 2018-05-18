@@ -30,15 +30,15 @@ describe('Test DateRange:',  () => {
       }
     }).$mount()
 
-    const $spans = vm.$el.querySelectorAll(".days span")
+    const $spans = vm.$el.querySelectorAll('.v-date-days span')
 
     let clickIndex = getUnPassiveDay($spans)
     $spans[clickIndex].dispatchEvent(getClickEvent())
-    const d1 = $spans[clickIndex].querySelector('.solar').innerText
+    const d1 = $spans[clickIndex].querySelector('.v-date-solar').innerText
 
     clickIndex = getUnPassiveDay($spans)
     $spans[clickIndex].dispatchEvent(getClickEvent())
-    const d2 = $spans[clickIndex].querySelector('.solar').innerText
+    const d2 = $spans[clickIndex].querySelector('.v-date-solar').innerText
 
     let {startDate, endDate} = dateRange
     if (Number(d1) < Number(d2)) {
@@ -68,7 +68,7 @@ describe('Test DateRange:',  () => {
       }
     }).$mount()
 
-    const $spans = vm.$el.querySelectorAll(".days span")
+    const $spans = vm.$el.querySelectorAll(".v-date-days span")
     let clickIndex = getUnPassiveDay($spans)
     $spans[clickIndex].dispatchEvent(getClickEvent())
     expect(dateRange.startDate).to.equal(dateRange.endDate)

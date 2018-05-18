@@ -71,7 +71,7 @@ exports.commonUnit = function (Comp) {
       firstDayOfWeek: 1
     })
 
-    const day = vm.$el.querySelector(".week-days span").innerText
+    const day = vm.$el.querySelector('.v-date-week-days span').innerText
     expect(day).to.equal('一')
   })
 
@@ -80,12 +80,12 @@ exports.commonUnit = function (Comp) {
       disableDaysBeforeToday: true
     })
 
-    const $spans = vm.$el.querySelectorAll(".days span")
+    const $spans = vm.$el.querySelectorAll('.v-date-days span')
     const todayPosition = getDayPositionInCalendar(moment(), 0)
 
     for (var i = 0, len = $spans.length; i < len; i++) {
       if (i < todayPosition-1) {
-        var hasPassiveCls = $spans[i].className.indexOf('passive') > -1
+        var hasPassiveCls = $spans[i].className.indexOf('v-date-passive') > -1
         expect(hasPassiveCls).to.equal(true)
       }
     }
@@ -100,13 +100,13 @@ exports.commonUnit = function (Comp) {
       daysDisabledEnd: end
     })
 
-    const $spans = vm.$el.querySelectorAll(".days span")
+    const $spans = vm.$el.querySelectorAll('.v-date-days span')
     const startPosition = getDayPositionInCalendar(start, 0)
     const endPosition = getDayPositionInCalendar(end, 0)
     for (var i = 0, len = $spans.length; i < len; i++) {
-      if (i <= endPosition - 1 && i>= startPosition - 1) {
-        var $solar = $spans[i].querySelector(".solar")
-        var hasPassiveCls = $solar.className.indexOf('passive') > -1
+      if (i <= endPosition - 1 && i >= startPosition - 1) {
+        var $solar = $spans[i].querySelector('.v-date-solar')
+        var hasPassiveCls = $solar.className.indexOf('v-date-passive') > -1
       }
     }
   })
@@ -122,11 +122,11 @@ exports.commonUnit = function (Comp) {
       }
     })
 
-    const $spans = vm.$el.querySelectorAll(".days span")
+    const $spans = vm.$el.querySelectorAll('.v-date-days span')
     for (var i = 0, len = $spans.length; i < len; i++) {
-      var $solar = $spans[i].querySelector(".solar")
+      var $solar = $spans[i].querySelector('.v-date-solar')
       var date = $solar.innerText
-      var hasPassiveCls = $spans[i].className.indexOf('passive') > -1
+      var hasPassiveCls = $spans[i].className.indexOf('v-date-passive') > -1
 
       if (date % 2 === 1) {
         expect(hasPassiveCls).to.equal(true)
@@ -134,13 +134,13 @@ exports.commonUnit = function (Comp) {
     }
   })
 
-  it('first day of week should be "Mon" when lang is "en"', () => {
+  it('first day of week should be \'Mon\' when lang is \'en\'', () => {
     let vm = getRenderedVm(Comp, {
       lang: 'en',
       firstDayOfWeek: 1
     })
 
-    const $weekDays = vm.$el.querySelectorAll(".week-days span")
+    const $weekDays = vm.$el.querySelectorAll('.v-date-week-days span')
     const firstDayOfWeek = $weekDays[0].innerText
     expect(firstDayOfWeek).to.equal('Mon')
   })
@@ -148,14 +148,14 @@ exports.commonUnit = function (Comp) {
   it('click a day will change selected day', (done) => {
     let vm = getRenderedVm(Comp)
 
-    const $spans = vm.$el.querySelectorAll(".days span")
+    const $spans = vm.$el.querySelectorAll('.v-date-days span')
     const clickIndex = getUnPassiveDay($spans)
-    const clickDay = $spans[clickIndex].querySelector('.solar').innerText
+    const clickDay = $spans[clickIndex].querySelector('.v-date-solar').innerText
 
     $spans[clickIndex].dispatchEvent(getClickEvent())
 
     vm.$nextTick(() => {
-      const seletecDay = vm.$el.querySelector(".days .selected .solar").innerText
+      const seletecDay = vm.$el.querySelector('.v-date-days .v-date-selected .v-date-solar').innerText
       expect(clickDay).to.equal(seletecDay)
       done()
     })
@@ -171,12 +171,12 @@ exports.commonUnit = function (Comp) {
 
     let vm = getRenderedVm(Comp)
 
-    let $btn = vm.$el.querySelectorAll('.arrow-button')
+    let $btn = vm.$el.querySelectorAll('.v-date-arrow-button')
 
     $btn[1].dispatchEvent(getClickEvent())
 
     vm.$nextTick(() => {
-      const _month = vm.$el.querySelector(".month-year span span").innerText
+      const _month = vm.$el.querySelector('.v-date-month-year span span').innerText
       expect(_month).to.match(new RegExp('^' + nextMonth))
       done()
     })
@@ -192,12 +192,12 @@ exports.commonUnit = function (Comp) {
 
     const vm = getRenderedVm(Comp)
 
-    const $btn = vm.$el.querySelectorAll('.arrow-button')
+    const $btn = vm.$el.querySelectorAll('.v-date-arrow-button')
 
     $btn[0].dispatchEvent(getClickEvent())
 
     vm.$nextTick(() => {
-      const _month = vm.$el.querySelector(".month-year span span").innerText
+      const _month = vm.$el.querySelector('.v-date-month-year span span').innerText
       expect(_month).to.match(new RegExp('^' + prevMonth))
       done()
     })
@@ -207,7 +207,7 @@ exports.commonUnit = function (Comp) {
     const vm = getRenderedVm(Comp, {
       monthYearFormat: 'YYYY/MM'
     })
-    const _month = vm.$el.querySelector('.month-year span span').innerText
+    const _month = vm.$el.querySelector('.v-date-month-year span span').innerText
     expect(_month).to.match(/\d\/\d/)
   })
 
@@ -222,18 +222,18 @@ exports.commonUnit = function (Comp) {
 
     const clickTimes = 11 - month
     for (var i = 0; i < clickTimes; i++) {
-      const $btn = vm.$el.querySelectorAll('.arrow-button')
+      const $btn = vm.$el.querySelectorAll('.v-date-arrow-button')
       $btn[1].dispatchEvent(getClickEvent())
     }
 
     vm.$nextTick(() => {
-      const _month = vm.$el.querySelector(".month-year span span").innerText
+      const _month = vm.$el.querySelector('.v-date-month-year span span').innerText
       expect(_month).to.match(new RegExp('^12'))
 
-      const birthday = vm.$el.querySelector(".birthday")
+      const birthday = vm.$el.querySelector('.birthday')
       birthday.should.not.equal(null)
 
-      const importantDay = vm.$el.querySelector(".important")
+      const importantDay = vm.$el.querySelector('.important')
       importantDay.should.not.equal(null)
       done()
     })

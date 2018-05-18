@@ -1,11 +1,11 @@
 <template>
-  <span class="ayou-day-cell cell"
+  <span class="v-date-day-cell v-date-cell"
         :class="dayClass"
         :title="showLunar && lunarText"
         @click.stop.prevent="handleDayClick()">
-    <div class="cell-text">
-      <p class="solar">{{day.dayMoment.date()}}</p>
-      <p class="lunar" :class="{'festival': isFestival}" v-if="showLunar">{{lunarText}}</p>
+    <div class="v-date-cell-text">
+      <p class="v-date-solar">{{day.dayMoment.date()}}</p>
+      <p class="v-date-lunar" :class="{'v-date-festival': isFestival}" v-if="showLunar">{{lunarText}}</p>
     </div>
   </span>
 </template>
@@ -104,12 +104,12 @@
       dayClass() {
         const {isSelected, isInRange, day, isStartDay, isEndDay, isPassive} = this
         let cls = [{
-          'selected': isSelected(),
-          'passive': day.isPassive,
-          'current-month': day.isCurrentMonth,
-          'in-range': isInRange(),
-          'start-day': isStartDay(),
-          'end-day': isEndDay()
+          'v-date-selected': isSelected(),
+          'v-date-passive': day.isPassive,
+          'v-date-current-month': day.isCurrentMonth,
+          'v-date-in-range': isInRange(),
+          'v-date-start-day': isStartDay(),
+          'v-date-end-day': isEndDay()
         }]
 
         if (typeof this.dayClassFunc === 'function') {
@@ -135,35 +135,35 @@
 <style lang="less" rel="stylesheet/less">
   @import "./_var.less";
 
-  .ayou-day-cell {
+  .v-date-day-cell {
     width: 14.28%;
     height: 16.67%;
 
-    &.passive {
+    &.v-date-passive {
       color: @grey;
     }
 
-    &.in-range {
+    &.v-date-in-range {
       background-color: @primary-light;
       color: #fff;
     }
 
-    &.passive {
+    &.v-date-passive {
       opacity: 0.4;
     }
 
-    .cell-text {
+    .v-date-cell-text {
       p {
         line-height: 1.2;
         margin: 0;
       }
-      .lunar {
+      .v-date-lunar {
         font-size: 0.8rem;
         margin-top: 0.4em;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        &.festival {
+        &.v-date-festival {
           color: @secondary;
         }
       }

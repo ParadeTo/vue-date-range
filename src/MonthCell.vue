@@ -1,6 +1,6 @@
 <template>
-  <span class="cell month-cell" :class="{'selected': isSelected}">
-    <span class="cell-text">
+  <span class="v-date-cell v-date-month-cell" :class="{'v-date-selected': isSelected}">
+    <span class="v-date-cell-text">
       {{ month }}
     </span>
   </span>
@@ -37,7 +37,7 @@
 </script>
 <style lang="less" rel="stylesheet/less">
   @import "./_var.less";
-  .month-cell {
+  .v-date-month-cell {
     width: 25%;
     height: 33.33%;
   }
