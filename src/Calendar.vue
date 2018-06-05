@@ -8,7 +8,7 @@
         <span>{{formatMonthYear}}</span>
       </span>
       <button class="v-date-arrow-button" style="float: right" @click.stop.prevent="changeMonthYear(1)">
-        <i class="v-date-arrow v-date-prev"></i>
+        <i class="v-date-arrow v-date-next"></i>
       </button>
     </div>
     <transition :name="openTransition ? 'fade' : ''"  mode="out-in">
@@ -167,7 +167,7 @@
     },
     watch: {
       range (val) {
-//        this.date = val.startDate
+        this.date = val.startDate
         this.resetDayOfMonth()
       },
       // show month that contains defaultDate

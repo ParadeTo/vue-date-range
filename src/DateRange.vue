@@ -1,5 +1,5 @@
 <template>
-  <div class="ayou-date-range">
+  <div class="v-date-range">
     <calendar
             :lang="lang"
             :open-transition="openTransition"
