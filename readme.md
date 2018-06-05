@@ -259,15 +259,15 @@ Also it has its specific props:
 This is a day html structure example:
 
 ```html
-<span title="重阳" class="ayou-day-cell selected">
-  <div class="solar">28</div> 
-  <div class="lunar festival">
-     重阳
+<span title="重阳" class="v-date-cell v-date-selected">
+  <div class="v-date-cell-text">
+    <p class="v-date-solar">3</p>
+    <p class="v-date-lunar">十八</p>
   </div>
 </span>
 ```
 
-The span tag will has different classes (`selected`, `passive`, `in-range`, `start-day`, `end-day`) according to the dates selected. 
+The span tag will has different classes (`v-date-selected`, `v-date-passive`, `v-date-in-range`, `v-date-start-day`, `v-date-end-day`) according to the dates selected.
 
 You can set your custom style using these classes. e.g.:
 
