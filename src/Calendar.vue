@@ -11,7 +11,7 @@
         <i class="v-date-arrow v-date-next"></i>
       </button>
     </div>
-    <transition :name="openTransition ? 'fade' : ''"  mode="out-in">
+    <transition :name="openTransition ? 'v-date-fade' : ''"  mode="out-in">
       <div class="v-date-wrapper" v-if="displayLevel === 1" key="day">
         <page-transition :openTransition="openTransition" :moveDirection="moveDirection" :toggleShow="toggleShow">
           <div class="v-date-week-days">
@@ -382,11 +382,11 @@
 <style lang="less" rel="stylesheet/less">
   @import "_var";
 
-  .fade-enter-active, .fade-leave-active {
+  .v-date-fade-enter-active, .v-date-fade-leave-active {
     transition: transform .3s;
   }
   /*.fade-enter,*/
-  .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .v-date-fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     transform: scale(0);
   }
 

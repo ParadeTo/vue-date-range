@@ -1,5 +1,5 @@
 <template>
-  <transition :name="openTransition ? moveDirection : ''">
+  <transition :name="openTransition ? `v-date-${moveDirection}` : ''">
     <div v-if="toggleShow" :style="styleStr" key="show">
       <slot></slot>
     </div>
@@ -28,35 +28,35 @@
   }
 </script>
 <style lang="less" rel="stylesheet/less">
-  .move-right-enter-active, .move-right-leave-active {
+  .v-date-move-right-enter-active, .v-date-move-right-leave-active {
     transition: transform .3s;
   }
-  .move-right-enter-active {
+  .v-date-move-right-enter-active {
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
   }
-  .move-right-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .v-date-move-right-leave-to /* .fade-leave-active below version 2.1.8 */ {
     transform: translateX(100%);
   }
-  .move-right-enter {
+  .v-date-move-right-enter {
     transform: translateX(-100%);
   }
 
-  .move-left-enter-active, .move-left-leave-active {
+  .v-date-move-left-enter-active, .v-date-move-left-leave-active {
     transition: transform .3s;
   }
-  .move-left-enter-active {
+  .v-date-move-left-enter-active {
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
   }
-  .move-left-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .v-date-move-left-leave-to /* .fade-leave-active below version 2.1.8 */ {
     transform: translateX(-100%);
   }
-  .move-left-enter {
+  .v-date-move-left-enter {
     transform: translateX(100%);
   }
 </style>
