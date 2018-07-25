@@ -138,6 +138,10 @@
       monthYearFormat: {
         default: 'MM - YYYY',
         type: String
+      },
+      weekDaysProp: {
+        default: null,
+        type: Array
       }
     },
     data () {
@@ -246,7 +250,7 @@
       }
     },
     created () {
-      this.initWeekDays()
+      this.initWeekDays(this.weekDaysProp || locals[this.lang].days)
     },
     mounted () {
       // this.initGesture()
@@ -317,11 +321,11 @@
           this.dayOfMonth = dayOfMonth.clone()
         }
       },
-      initWeekDays () {
+      initWeekDays (weekDays) {
         const dow = this.firstDayOfWeek
         for (let i = dow; i < 7 + dow; i++) {
           let day = i % 7
-          this.weekDays.push(locals[this.lang].days[day])
+          this.weekDays.push(weekDays[day])
         }
       },
 

@@ -4,7 +4,7 @@
     <div class="container calendar">
       <h2>Calendar</h2>
       <p>{{date.format("YYYY-MM-DD")}}</p>
-      <calendar class="calendar" :openTransition="true" :dayOfMonthProp="dayOfMonth" :lang="lang" :syncDate.sync="date" :showLunar="true" />
+      <calendar class="calendar" v-model="date" :weekDaysProp="weekDaysProp" :lang="lang" :month-year-format="'MMMM YYYY'" :disable-days-before-today="true" :first-day-of-week="0" ></calendar>
     </div>
     <div class="container">
       <h2>DateRange</h2>
@@ -23,12 +23,13 @@
     },
     data() {
       return {
-        date: moment(),
+        date: moment().add(1, 'month'),
         dayOfMonth: moment().add(-1, "months"),
         range: {
           startDate: moment("2008-03-08"),
           endDate: moment("2008-03-10")
         },
+        weekDaysProp: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
         lang: 'zh'
       }
     },
