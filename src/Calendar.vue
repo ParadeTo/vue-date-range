@@ -11,6 +11,7 @@
         <i class="v-date-arrow v-date-next"></i>
       </button>
     </div>
+
     <transition :name="openTransition ? 'v-date-fade' : ''"  mode="out-in">
       <div class="v-date-wrapper" v-if="displayLevel === 1" key="day">
         <page-transition :openTransition="openTransition" :moveDirection="moveDirection" :toggleShow="toggleShow">
@@ -150,21 +151,22 @@
       // Use value prop if it's passed in (possibly by v-model), this allows
       // null to be passed explicitly
       if (this.$options.propsData.hasOwnProperty('value')) {
-        dateInitial = this.value.clone()
-      } else if (this.syncDate) {
-        dateInitial = this.syncDate.clone()
+        dateInitial = this.value
+      } else if (this.$options.propsData.hasOwnProperty('syncDate')) {
+        dateInitial = this.syncDate
       } else if (this.range && this.range.startDate) {
-        dateInitial = this.range.startDate.clone()
+        dateInitial = this.range.startDate
       } else {
         dateInitial = moment()
       }
 
+      // dayOfMonth and date cannot reference to the same obj
       return {
         locals: locals,
         displayLevel: 1,
         weekDays: [],
-        dayOfMonth: (this.dayOfMonthProp && this.dayOfMonthProp.clone()) || dateInitial.clone(),
-        date: dateInitial.clone(),
+        dayOfMonth: (this.dayOfMonthProp && this.dayOfMonthProp.clone()) || (dateInitial && dateInitial.clone()) || moment(),
+        date: (dateInitial && dateInitial.clone()),
         toggleShow: true,
         moveDirection: "move-right"
       }
@@ -215,16 +217,17 @@
       },
       dayList () {
         let days = []
+        const _dayOfMonth = this.dayOfMonth
 
         const firstDayOfWeek = this.firstDayOfWeek
-        const startOfMonth = this.dayOfMonth.startOf('month').isoWeekday()
-        const monthNumber = this.dayOfMonth.month()
-        const dayCount = this.dayOfMonth.daysInMonth()
+        const startOfMonth = _dayOfMonth.startOf('month').isoWeekday()
+        const monthNumber = _dayOfMonth.month()
+        const dayCount = _dayOfMonth.daysInMonth()
 
-        const lastMonth = this.dayOfMonth.clone().month(monthNumber - 1)
+        const lastMonth = _dayOfMonth.clone().month(monthNumber - 1)
         const lastMonthDayCount = lastMonth.daysInMonth()
 
-        const nextMonth = this.dayOfMonth.clone().month(monthNumber + 1)
+        const nextMonth = _dayOfMonth.clone().month(monthNumber + 1)
 
         // Previous month's days
         const diff = (Math.abs(firstDayOfWeek - (startOfMonth + 7)) % 7)
@@ -235,7 +238,7 @@
 
         // Current month's days
         for (let i = 1; i <= dayCount; i++) {
-          const dayMoment = this.dayOfMonth.clone().date(i)
+          const dayMoment = _dayOfMonth.clone().date(i)
           var isPassive = this.isPassive(dayMoment)
           days.push({ dayMoment, isPassive, isCurrentMonth: true })
         }
@@ -315,7 +318,7 @@
         // If no date is selected then it's not necessary to update dayOfMonth
         if (!date) return
         if (formatter(date, 'YYYY-MM') !== formatter(dayOfMonth, 'YYYY-MM')) {
-          let _diff = Number(date.diff(dayOfMonth, 'months'))
+          let _diff = Number(date.clone().diff(dayOfMonth, 'months'))
           _diff = _diff <= 0 ? _diff - 1 : _diff
           dayOfMonth.add(_diff, 'months')
           this.dayOfMonth = dayOfMonth.clone()
