@@ -272,17 +272,17 @@ The span tag will has different classes (`v-date-selected`, `v-date-passive`, `v
 You can set your custom style using these classes. e.g.:
 
 ```html
-.ayou-day-cell.start-day {
+.v-date-day-cell.v-date-start-day {
   border-bottom-left-radius: 50%;
   border-top-left-radius: 50%;
   background-color: transparent;
 }
-.ayou-day-cell.end-day {
+.v-date-day-cell.v-date-end-day {
   border-bottom-right-radius: 50%;
   border-top-right-radius: 50%;
   background-color: transparent;
 }
-.ayou-day-cell.in-range {
+.v-date-day-cell.v-date-in-range {
   background-color: orange;
 }
 ```
