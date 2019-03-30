@@ -293,3 +293,5 @@ You can set your custom style using these classes. e.g.:
 * [EZGIF.COM](https://ezgif.com/)
 
 
+# License
+MIT
