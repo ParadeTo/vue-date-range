@@ -1,6 +1,6 @@
 {
   "name": "vue-date-range",
-  "version": "3.1.6",
+  "version": "3.1.7",
   "description": "A vue component for choosing dates and date ranges. Uses Moment.js for date operations. Support Chinese lunar.",
   "main": "dist/vue-date-range.min.js",
   "scripts": {
